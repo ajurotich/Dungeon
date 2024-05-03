@@ -75,7 +75,7 @@ namespace DungeonLibrary {
 		}
 
 		//=== METHODS ===\\
-		public WeaponType RandomType() {
+		public static WeaponType RandomType() {
 			Random random = new Random();
 			Array values = Enum.GetValues(typeof(WeaponType));
 			WeaponType rType = (WeaponType)values.GetValue(random.Next(values.Length));

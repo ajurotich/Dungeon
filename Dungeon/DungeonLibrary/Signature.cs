@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 
 namespace DungeonLibrary {
 	public class Signature {
@@ -20,6 +21,10 @@ namespace DungeonLibrary {
 			Console.WriteLine(description);
 			for(int i = 0;i<description.Length;i++) Console.Write("-");
 			Console.WriteLine("\n");
+		}
+
+		public static void Stringify<T>(T input) {
+			Console.WriteLine(JsonSerializer.Serialize(input, new JsonSerializerOptions { WriteIndented = true }));
 		}
 
 		public static void Footer() {

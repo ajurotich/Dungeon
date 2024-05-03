@@ -54,7 +54,7 @@ namespace DungeonLibrary {
 		}
 
 		//=== METHODS ===\\
-		public RaceType RandomType() {
+		public static RaceType RandomType() {
 			Random random = new Random();
 			Array values = Enum.GetValues(typeof(RaceType));
 			RaceType rType = (RaceType)values.GetValue(random.Next(values.Length));
