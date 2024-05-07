@@ -1,123 +1,93 @@
 ﻿using System;
 using DungeonLibrary;
 
-namespace Dungeon {
-	class Program {
-		static void Main(string[] args) {
+namespace Dungeon;
 
-			//=== TITLE/HEADER ===\\
-			Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
+class Program {
+	static void Main(string[] args) {
 
-            //=== VARIABLES ===\\
-			int score = 0;
-			Entity player = CreateCharacter();
+		//=== TITLE/HEADER ===\\
+		Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
-			
+        //=== VARIABLES ===\\
+		int score = 0;
+		Entity player = CreateCharacter();
+		MenuOptions menuChoice = MenuOptions.Info;
 
-			//=== GAME LOOP ===\\
-			Console.ReadLine();
-#if false
-			//TODO game loop
-			// - exit condition
-			do {
-				//TODO generate random room
+		//=== FIRST ROUND ===\\
+		Console.Clear();
+		//TODO generate room
+		Console.WriteLine("generate room");
 
-				//TODO select monster
+		//=== GAME LOOP ===\\
+		while(true) {
 
-				do {
-					//TODO gameplay menu options
-					switch("") {
-						case "combat": {
-							//TODO combat
-							break;
-						}
+			//does action
+            switch (menuChoice) {
+				case MenuOptions.Info:
+					Menu.Info();
+                    break;
+				case MenuOptions.Move:
+					Menu.Move();
+					break;
+				case MenuOptions.Search:
+					Menu.Search();
+					break;
+				default:
+                    Console.WriteLine("Unknown command.");
+                    break;
+			}
 
-						case "runaway": {
-							//TODO run away
-							break;
-						}
+			//choose action for next loop
+			//done at end of 
+			menuChoice = Menu.MenuSelect();
+			if(menuChoice == MenuOptions.Quit) break;
 
-						case "playerinfo": {
-							//TODO player info
-							break;
-						}
-
-						case "monsterinfo": {
-							//TODO monsterinfo
-							break;
-						}
-
-						case "checklife": {
-							//TODO check life
-							break;
-						}
-
-						case "exit": {
-							//TODO exit
-							break;
-						}
-
-						default: {
-							//TODO default/invalid
-							break;
-						}
-
-
-					}
-
-					// exit condition
-
-				} while(false);
-
-				//TODO output final score
-
-			} while(false);
-#endif
-
-			Signature.Footer();
-
+			Console.Clear();
 		}
 
-		private static Entity CreateCharacter() {
-			Console.WriteLine("NAME YOUR CHARACTER");
-			string nameChoice = Console.ReadLine();
-
-			Array values = Enum.GetValues(typeof(RaceType));
-			RaceType rType;
-
-			int charConfirm = 2;
-			do {
-				Console.WriteLine("Choose your race:\n" +
-				"(H) Human (default)\n" +
-				"(E) Elf\n" +
-				"(D) Dwarf\n" +
-				"(G) Goblin\n" +
-				"(O) Orc");
-				int choice = Console.ReadLine().ToUpper().Trim() switch {
-					"H" => 0,
-					"E" => 1,
-					"D" => 2,
-					"G" => 3,
-					"O" => 4,
-					_ => 0
-				};
-				rType = (RaceType)values.GetValue(choice);
-
-				Console.WriteLine($"You wish to be a {Enum.GetName(typeof(RaceType), choice)}? Y/N");
-				do {
-					charConfirm = Console.ReadLine().ToUpper().Trim() switch {
-						"Y" => 0,
-						"N" => 1,
-						_	=> 2
-					};
-				} while(charConfirm == 2);
-
-            } while(charConfirm != 0);
-
-			return new Entity(nameChoice, new Race(rType),
-				new Armour(ArmourType.Medium),
-				new Weapon(WeaponType.Sword));
-		}
-
+		Signature.Footer();
 	}
+
+	private static Entity CreateCharacter() {
+		Console.WriteLine("NAME YOUR CHARACTER");
+		string nameChoice = Console.ReadLine();
+
+		Array values = Enum.GetValues(typeof(RaceType));
+		RaceType rType;
+
+		int charConfirm = 2;
+		do {
+			Console.WriteLine("Choose your race:\n" +
+			"(H) Human (default)\n" +
+			"(E) Elf\n" +
+			"(D) Dwarf\n" +
+			"(G) Goblin\n" +
+			"(O) Orc");
+			int choice = Console.ReadLine().ToUpper().Trim() switch {
+				"H" => 0,
+				"E" => 1,
+				"D" => 2,
+				"G" => 3,
+				"O" => 4,
+				_ => 0
+			};
+			rType = (RaceType)values.GetValue(choice);
+
+			Console.WriteLine($"You wish to be a {(RaceType)choice}? Y/N");
+			do {
+				charConfirm = Console.ReadLine().ToUpper().Trim() switch {
+					"Y" => 0,
+					"N" => 1,
+					_	=> 2
+				};
+			} while(charConfirm == 2);
+
+        } while(charConfirm != 0);
+
+		return new Entity(nameChoice, new Race(rType),
+			new Armour(ArmourType.Medium),
+			new Weapon(WeaponType.Sword));
+	}
+
 }
