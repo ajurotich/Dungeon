@@ -50,18 +50,41 @@ public class Menu {
 	}
 
 	public static void Info() {
-		//TODO menuoption : info
-		Console.WriteLine("===INFO===");
+		Console.Clear();
+		Console.WriteLine("\n===INFO===\n");
+		WorldManager.CurrentWorld.Display();
     }
 
 	public static void Move() {
-		//TODO menuoption : move
-		Console.WriteLine("===MOVE===");
+		Console.Clear();
+		Console.WriteLine("\n===MOVE===\n");
+
+		if(!WorldManager.CurrentWorld.IsSearched) {
+            Console.WriteLine("There's more to discover here, but you may return later.\n" +
+				"Are you sure you want to leave? Y/N");
+
+			bool loop = true;
+            while (loop) 
+				switch(Console.ReadLine().ToUpper().Trim()) {
+					case "Y": 
+						loop = false;
+						break;
+					case "N": return;
+					default: break;
+				}
+        }
+
+		WorldManager.ChooseWorlds();
 	}
 
 	public static void Search() {
 		//TODO menuoption : search
-		Console.WriteLine("===SEARCH===");
-	}
+		Console.Clear();
+		Console.WriteLine("\n===SEARCH===\n");
+
+		//while(!WorldManager.CurrentWorld.IsSearched)
+		//	WorldManager.CurrentWorld.IncrementSearch();
+		//Console.WriteLine(WorldManager.CurrentWorld.Name + " searched:" + WorldManager.CurrentWorld.IsSearched);
+    }
 
 }

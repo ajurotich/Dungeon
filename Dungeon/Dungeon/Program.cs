@@ -10,18 +10,14 @@ class Program {
 		//=== TITLE/HEADER ===\\
 		Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
-        //=== VARIABLES ===\\
-		int score = 0;
-		Entity player = CreateCharacter();
-		MenuOptions menuChoice = MenuOptions.Info;
+        //=== VARIABLES/SETUP ===\\
+        Entity player = CreateCharacter();
+        WorldManager.CreateWorlds();
+		MenuOptions menuChoice = MenuOptions.Move;
 
 		//=== FIRST ROUND ===\\
 		Console.Clear();
-		//TODO generate room
-		Console.WriteLine("generate room");
-		string longstring = "You find yourself in a narrow, icy corridor, the walls glistening with frost. The air is crisp, each breath forming a small cloud before dissipating. Jagged icicles hang precariously from the ceiling, occasionally dripping water onto the cold stone floor. The passage twists and turns ahead, promising further exploration into the frozen depths of the dungeon.";
-        Console.WriteLine();
-		
+		StartDescription();
 
         //=== GAME LOOP ===\\
         while (true) {
@@ -93,5 +89,24 @@ class Program {
 			new Armour(ArmourType.Medium),
 			new Weapon(WeaponType.Sword));
 	}
+
+	public static void StartDescription() {
+		//https://chat.openai.com/share/8ce25086-b521-4c56-a4ad-2120598d5944
+		string[] descriptions = new string[] {
+			"entryroom1",
+			"entryroom2",
+			"entryroom3",
+			"entryroom4",
+			"entryroom5",
+		};
+		Random rand = new Random();
+
+        Console.WriteLine("Welcome to the realm of Navia.\n");
+        Console.WriteLine(Signature.Wrap("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n", 80));
+		Console.WriteLine(Signature.Wrap(descriptions[rand.Next(descriptions.Length)], 80));
+
+        Console.WriteLine("\n\nPress any key to continue...");
+		Console.ReadKey(false);
+    }
 
 }
