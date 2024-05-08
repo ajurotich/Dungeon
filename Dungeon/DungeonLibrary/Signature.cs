@@ -27,6 +27,17 @@ namespace DungeonLibrary {
 			Console.WriteLine(JsonSerializer.Serialize(input, new JsonSerializerOptions { WriteIndented = true }));
 		}
 
+		public static string Wrapper(string v, int size) {
+			v = v.TrimStart();
+			if(v.Length <= size)
+				return v;
+			var nextspace = v.LastIndexOf(' ', size);
+			if(-1 == nextspace)
+				nextspace = Math.Min(v.Length, size);
+			return v.Substring(0, nextspace) + ((nextspace >= v.Length) ?
+			"" : "\n" + Wrapper(v.Substring(nextspace), size));
+		}
+
 		public static void Footer() {
 			Console.Clear();
 			Console.WriteLine("\n\n\n\n");

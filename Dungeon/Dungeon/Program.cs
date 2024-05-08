@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 using DungeonLibrary;
 
 namespace Dungeon;
@@ -18,9 +19,12 @@ class Program {
 		Console.Clear();
 		//TODO generate room
 		Console.WriteLine("generate room");
+		string longstring = "You find yourself in a narrow, icy corridor, the walls glistening with frost. The air is crisp, each breath forming a small cloud before dissipating. Jagged icicles hang precariously from the ceiling, occasionally dripping water onto the cold stone floor. The passage twists and turns ahead, promising further exploration into the frozen depths of the dungeon.";
+        Console.WriteLine();
+		
 
-		//=== GAME LOOP ===\\
-		while(true) {
+        //=== GAME LOOP ===\\
+        while (true) {
 
 			//does action
             switch (menuChoice) {
@@ -39,7 +43,6 @@ class Program {
 			}
 
 			//choose action for next loop
-			//done at end of 
 			menuChoice = Menu.MenuSelect();
 			if(menuChoice == MenuOptions.Quit) break;
 
@@ -47,6 +50,7 @@ class Program {
 		}
 
 		Signature.Footer();
+		
 	}
 
 	private static Entity CreateCharacter() {

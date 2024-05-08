@@ -89,6 +89,8 @@ namespace DungeonLibrary {
 
 			return rType;
 		}
+		public static void test() {
 
+		}
 	}
 }
