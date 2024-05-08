@@ -27,13 +27,23 @@ namespace DungeonLibrary {
 			Console.WriteLine(JsonSerializer.Serialize(input, new JsonSerializerOptions { WriteIndented = true }));
 		}
 
+		public static string Wrap(string v, int size) {
+			v = v.TrimStart();
+			if(v.Length <= size)
+				return v;
+			var nextspace = v.LastIndexOf(' ', size);
+			if(-1 == nextspace)
+				nextspace = Math.Min(v.Length, size);
+			return v.Substring(0, nextspace) + ((nextspace >= v.Length) ?
+			"" : "\n" + Wrap(v.Substring(nextspace), size));
+		}
+
 		public static void Footer() {
 			Console.Clear();
-			Console.WriteLine("\n\n\n\n");
-			Console.WriteLine("Thanks for playing!");
+			Console.WriteLine("\nThanks for playing!");
 			Console.WriteLine("Created by Alias Jurotich");
 			Console.WriteLine("\n\n\n\n");
-		}
+        }
 
 	}
 }
