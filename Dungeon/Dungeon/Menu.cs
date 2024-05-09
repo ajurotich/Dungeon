@@ -66,10 +66,13 @@ public class Menu {
 			bool loop = true;
             while (loop) 
 				switch(Console.ReadLine().ToUpper().Trim()) {
-					case "Y": 
+					case "Y":
+					case "YES":
 						loop = false;
 						break;
-					case "N": return;
+					case "NO":
+					case "N":
+						return;
 					default: break;
 				}
         }
@@ -78,13 +81,13 @@ public class Menu {
 	}
 
 	public static void Search() {
-		//TODO menuoption : search
 		Console.Clear();
 		Console.WriteLine("\n===SEARCH===\n");
 
-		//while(!WorldManager.CurrentWorld.IsSearched)
-		//	WorldManager.CurrentWorld.IncrementSearch();
-		//Console.WriteLine(WorldManager.CurrentWorld.Name + " searched:" + WorldManager.CurrentWorld.IsSearched);
-    }
+		if(!WorldManager.CurrentWorld.IsSearched) WorldManager.SearchWorld();
+		else Console.WriteLine("You try to search, but it seems there's nothing else of value here.\n" +
+				"World complete!");
+
+        }
 
 }
