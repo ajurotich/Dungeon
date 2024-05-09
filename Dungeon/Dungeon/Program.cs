@@ -5,13 +5,16 @@ using DungeonLibrary;
 namespace Dungeon;
 
 class Program {
+
+	public static Entity player = DefaultPlayer();
+
 	static void Main(string[] args) {
 
 		//=== TITLE/HEADER ===\\
 		Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
         //=== VARIABLES/SETUP ===\\
-        Entity player = CreateCharacter();
+        //player = CreateCharacter();
         WorldManager.CreateWorlds();
 		MenuOptions menuChoice = MenuOptions.Move;
 
@@ -47,6 +50,13 @@ class Program {
 
 		Signature.Footer();
 		
+	}
+
+	private static Entity DefaultPlayer() {
+		return new Entity("Name",
+			new Race(RaceType.Human),
+			new Armour(ArmourType.Medium),
+			new Weapon(WeaponType.Sword));
 	}
 
 	private static Entity CreateCharacter() {
@@ -85,12 +95,13 @@ class Program {
 
         } while(charConfirm != 0);
 
-		return new Entity(nameChoice, new Race(rType),
+		return new Entity(nameChoice,
+			new Race(rType),
 			new Armour(ArmourType.Medium),
 			new Weapon(WeaponType.Sword));
 	}
 
-	public static void StartDescription() {
+	private static void StartDescription() {
 		//https://chat.openai.com/share/8ce25086-b521-4c56-a4ad-2120598d5944
 		string[] descriptions = new string[] {
 			"entryroom1",
@@ -99,11 +110,10 @@ class Program {
 			"entryroom4",
 			"entryroom5",
 		};
-		Random rand = new Random();
 
         Console.WriteLine("Welcome to the realm of Navia.\n");
         Console.WriteLine(Signature.Wrap("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n", 80));
-		Console.WriteLine(Signature.Wrap(descriptions[rand.Next(descriptions.Length)], 80));
+		Console.WriteLine(Signature.Wrap(descriptions[new Random().Next(descriptions.Length)], 80));
 
         Console.WriteLine("\n\nPress any key to continue...");
 		Console.ReadKey(false);
