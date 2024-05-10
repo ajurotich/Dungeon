@@ -102,7 +102,6 @@ class Program {
 	}
 
 	private static void StartDescription() {
-		//https://chat.openai.com/share/8ce25086-b521-4c56-a4ad-2120598d5944
 		string[] descriptions = new string[] {
 			"entryroom1",
 			"entryroom2",
