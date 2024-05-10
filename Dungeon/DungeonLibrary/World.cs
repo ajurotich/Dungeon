@@ -40,7 +40,7 @@ public class World {
 			_worldObjects[i] = (new Random().Next(1, 101)) switch { 
 				>0  and <=25 => new Armour(Armour.RandomType()),
 				>25 and <=50 => new Weapon(Weapon.RandomType()),
-				//>50 and <=75 => new Potion(),
+				>50 and <=75 => new Potion(),
 				_ => new Entity("name",
 					new Race(Race.RandomType()),
 					new Armour(Armour.RandomType()),
