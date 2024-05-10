@@ -43,7 +43,7 @@ namespace DungeonLibrary {
 			Console.WriteLine("\nThanks for playing!");
 			Console.WriteLine("Created by Alias Jurotich");
 			Console.WriteLine("\n\n\n\n");
-        }
+		}
 
 	}
 }

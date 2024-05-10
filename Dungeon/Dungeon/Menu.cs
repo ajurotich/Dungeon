@@ -53,18 +53,18 @@ public class Menu {
 		Console.Clear();
 		Console.WriteLine("\n===INFO===\n");
 		WorldManager.CurrentWorld.Display();
-    }
+	}
 
 	public static void Move() {
 		Console.Clear();
 		Console.WriteLine("\n===MOVE===\n");
 
 		if(!WorldManager.CurrentWorld.IsSearched) {
-            Console.WriteLine("There's more to discover here, but you may return later.\n" +
+			Console.WriteLine("There's more to discover here, but you may return later.\n" +
 				"Are you sure you want to leave? Y/N");
 
 			bool loop = true;
-            while (loop) 
+			while (loop) 
 				switch(Console.ReadLine().ToUpper().Trim()) {
 					case "Y":
 					case "YES":
@@ -75,7 +75,7 @@ public class Menu {
 						return;
 					default: break;
 				}
-        }
+		}
 
 		WorldManager.ChooseWorlds();
 	}
@@ -88,6 +88,6 @@ public class Menu {
 		else Console.WriteLine("You try to search, but it seems there's nothing else of value here.\n" +
 				"World complete!");
 
-        }
+		}
 
 }

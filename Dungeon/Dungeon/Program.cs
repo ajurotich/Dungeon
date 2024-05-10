@@ -13,23 +13,23 @@ class Program {
 		//=== TITLE/HEADER ===\\
 		Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
-        //=== VARIABLES/SETUP ===\\
-        //player = CreateCharacter();
-        WorldManager.CreateWorlds();
+		//=== VARIABLES/SETUP ===\\
+		//player = CreateCharacter();
+		WorldManager.CreateWorlds();
 		MenuOptions menuChoice = MenuOptions.Move;
 
 		//=== FIRST ROUND ===\\
 		Console.Clear();
 		StartDescription();
 
-        //=== GAME LOOP ===\\
-        while (true) {
+		//=== GAME LOOP ===\\
+		while (true) {
 
 			//does action
-            switch (menuChoice) {
+			switch (menuChoice) {
 				case MenuOptions.Info:
 					Menu.Info();
-                    break;
+					break;
 				case MenuOptions.Move:
 					Menu.Move();
 					break;
@@ -37,8 +37,8 @@ class Program {
 					Menu.Search();
 					break;
 				default:
-                    Console.WriteLine("Unknown command.");
-                    break;
+					Console.WriteLine("Unknown command.");
+					break;
 			}
 
 			//choose action for next loop
@@ -93,7 +93,7 @@ class Program {
 				};
 			} while(charConfirm == 2);
 
-        } while(charConfirm != 0);
+		} while(charConfirm != 0);
 
 		return new Entity(nameChoice,
 			new Race(rType),
@@ -111,12 +111,12 @@ class Program {
 			"entryroom5",
 		};
 
-        Console.WriteLine("Welcome to the realm of Navia.\n");
-        Console.WriteLine(Signature.Wrap("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n", 80));
+		Console.WriteLine("Welcome to the realm of Navia.\n");
+		Console.WriteLine(Signature.Wrap("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n", 80));
 		Console.WriteLine(Signature.Wrap(descriptions[new Random().Next(descriptions.Length)], 80));
 
-        Console.WriteLine("\n\nPress any key to continue...");
+		Console.WriteLine("\n\nPress any key to continue...");
 		Console.ReadKey(false);
-    }
+	}
 
 }

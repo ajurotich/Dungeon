@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DungeonLibrary {
 
-    public class Entity {
+	public class Entity {
 
-        //=== FIELDS ===\\
+		//=== FIELDS ===\\
 		private string _name;
 		private float _health, _skill;
 		private bool _isAlive;
@@ -17,36 +17,36 @@ namespace DungeonLibrary {
 		private Armour _armour;
 		private Weapon _weapon;
 
-        //=== PROPERTIES ===\\
-        public string Name	 => _name;
-        public float Health	 => _health;
-        public float Skill	 => _skill;
-        public bool IsAlive	 => _isAlive;
+		//=== PROPERTIES ===\\
+		public string Name	 => _name;
+		public float Health	 => _health;
+		public float Skill	 => _skill;
+		public bool IsAlive	 => _isAlive;
 		public Race Race	 => _race;
 		public Armour Armour => _armour;
 		public Weapon Weapon => _weapon;
 
-        //=== CTOR ===\\
-        public Entity(string name, Race race, Armour armour, Weapon weapon) {
-            _name = name;
+		//=== CTOR ===\\
+		public Entity(string name, Race race, Armour armour, Weapon weapon) {
+			_name = name;
 
-            _race = race;
+			_race = race;
 			_health = race.MaxHealth;
 			_skill = race.MaxSkill;
 			_isAlive = true;
 
 			_armour = armour;
 			_weapon = weapon;
-        }
+		}
 
-        //=== METHODS ===\\
-        public float Damage(float damageAmount) {
+		//=== METHODS ===\\
+		public float Damage(float damageAmount) {
 			_health -= damageAmount;
 
-            if(Health < 0) _isAlive = false;
+			if(Health < 0) _isAlive = false;
 
-            return Health;
-        }
+			return Health;
+		}
 		public float Heal(float healAmount) {
 			_health += healAmount;
 
@@ -62,5 +62,5 @@ namespace DungeonLibrary {
 		public void ChangeWeapon(Weapon weapon) {
 			_weapon = weapon; 
 		}
-    }
+	}
 }

@@ -95,8 +95,8 @@ public class WorldManager {
 		Console.Write("You search through the world and find");
 		for(int i = 0; i < 3; i++) {
 			System.Threading.Thread.Sleep(500);
-            Console.Write(".");
-        }
+			Console.Write(".");
+		}
 
 		//currentWorld.DisplayAllObjects();
 
@@ -107,7 +107,7 @@ public class WorldManager {
 
 				//todo display new and old armour stats before asking to swap
 
-                Console.WriteLine("Would you like to do with it?");
+				Console.WriteLine("Would you like to do with it?");
 				Console.WriteLine(
 					"1) Equip found armour and discard current armour\n" +
 					"2) Discard found armour and keep current armour\n");
@@ -116,14 +116,14 @@ public class WorldManager {
 				while(loop) {
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
-                            Console.WriteLine($"You discard the {Enum.GetName(Program.player.Armour.Type)}" +
+							Console.WriteLine($"You discard the {Enum.GetName(Program.player.Armour.Type)}" +
 								$" and equip the {Enum.GetName(a.Type)}.");
-                            Program.player.ChangeArmor(a);
+							Program.player.ChangeArmor(a);
 							loop = false;
 							break;
 
 						case "2":
-                            Console.WriteLine("You decide to keep your current armour.");
+							Console.WriteLine("You decide to keep your current armour.");
 							loop = false;
 							break;
 
@@ -176,9 +176,9 @@ public class WorldManager {
 
 			case Entity e:
 				Console.WriteLine($"Nothing... but it seems a {Enum.GetName(e.Race.Type)} found you!");
-                Console.WriteLine("--BATTLE--");
-                //TODO FIGHT
-                break;
+				Console.WriteLine("--BATTLE--");
+				//TODO FIGHT
+				break;
 
 			default:
 				Console.WriteLine("Unknown Object Found... What is this thing?");
@@ -187,7 +187,7 @@ public class WorldManager {
 
 
 		if(currentWorld.IncrementSearch())
-			   Console.WriteLine("\nIt seems you've found everything of value...");
+			Console.WriteLine("\nIt seems you've found everything of value...");
 		else 
 			Console.WriteLine("\nIt seems there may be more to discover here...");
 
