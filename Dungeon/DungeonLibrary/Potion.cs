@@ -6,34 +6,63 @@ using System.Threading.Tasks;
 
 namespace DungeonLibrary;
 
-public enum Type {
-	Lesser,
-	Greater,
-	Full
+public enum Descriptor {
+	invincible,
+	fearless,
+	intoxicating,
+	mysterious,
+	enchanting,
+	vigorous,
+	diligent,
+	overwhelming,
+	gorgeous,
+	passionate,
+	terrifying,
+	beautiful,
+	powerful,
+	sexy
+}
+public enum Verb {
+	absorb,
+	eat,
+	swallow,
+	drain,
+	gulp,
+	guzzle,
+	inhale,
+	sip,
+	slurp,
+	suck,
+	down,
+	drink
 }
 
-internal class Potion {
+public class Potion {
 
 	//=== FIELDS ===\\
-	private Type _type;
+	private Descriptor _descriptor;
+	private Verb _verb;
 	private float _healPercent;
 
 	//=== PROPS ===\\
-	public Type Type			=> _type;
+	public string Descriptor	=> Enum.GetName(_descriptor);
+	public string Verb			=> Enum.GetName(_verb);
 	public float HealPercent	=> _healPercent;
 
 	//=== CTOR ===\\
 	public Potion() {
-		_healPercent = new Random().Next(10, 41);
-		if(_healPercent != 100) _healPercent = 100;
+		Random rand = new Random();
 
-		_type = _healPercent switch {
-			100		=> Type.Full,
-			>=30	=> Type.Greater,
-			_		=> Type.Lesser
-		};
+		Array values = Enum.GetValues(typeof(Descriptor));
+		_descriptor = (Descriptor)values.GetValue(rand.Next(values.Length));
+
+		values = Enum.GetValues(typeof(Verb));
+		_verb = (Verb)values.GetValue(rand.Next(values.Length));
+
+		_healPercent = (rand.Next(0, 101) == 100) ? 100 : rand.Next(10, 41);
+
 	}
 
 	//=== METHODS ===\\
-
+	
 }

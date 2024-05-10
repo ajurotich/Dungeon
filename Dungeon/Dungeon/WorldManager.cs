@@ -98,7 +98,7 @@ public class WorldManager {
 			Console.Write(".");
 		}
 
-		//currentWorld.DisplayAllObjects();
+		currentWorld.DisplayAllObjects();
 
 		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount-1];
 		switch(currentObject) {
@@ -166,30 +166,36 @@ public class WorldManager {
 				break;
 			}
 
-			//TODO POTION OBJECT
-			/*
-			//case Potion p:
-			//	Console.WriteLine($"A delicious health potion! You restore {p.HealAmount}!");
-			//	Player.Heal(p.HealAmount);
-			//	break;
-			*/
+			case Potion p:
+				float healAmount = p.HealPercent * Program.player.Race.MaxHealth / 100;
+					
+				Console.WriteLine($"A {p.Descriptor} health potion!");
+                Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
+
+                Program.player.Heal(healAmount);
+				break;
 
 			case Entity e:
 				Console.WriteLine($"Nothing... but it seems a {Enum.GetName(e.Race.Type)} found you!");
 				Console.WriteLine("--BATTLE--");
 				//TODO FIGHT
+
+				if(Program.player.IsAlive)
+					Console.WriteLine("Congrats on getting out alive!\n");
+
 				break;
 
 			default:
-				Console.WriteLine("Unknown Object Found... What is this thing?");
+				Console.WriteLine("Unknown object found... what is this thing?");
 				break;
 		}
 
-
-		if(currentWorld.IncrementSearch())
-			Console.WriteLine("\nIt seems you've found everything of value...");
-		else 
-			Console.WriteLine("\nIt seems there may be more to discover here...");
+		if(Program.player.IsAlive) {
+			if(currentWorld.IncrementSearch())
+				Console.WriteLine("\nIt seems you've found everything of value in this world...");
+			else 
+				Console.WriteLine("\nIt seems there may be more to discover here...");
+		}
 
 	}
 
