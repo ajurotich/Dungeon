@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,20 +53,20 @@ public class Armour {
 				break;
 		}
 		switch (_mod) {
-		case ArmourMod.Epic:
-			_defense *= 1.15f;
-			break;
-		case ArmourMod.New:
-			_defense *= 1.05f;
-			break;
-		case ArmourMod.Used:
-			break;
-		case ArmourMod.Old:
-			_defense *= .95f;
-			break;
-		case ArmourMod.Broken:
-			_defense *= .85f;
-			break;
+			case ArmourMod.Epic:
+				_defense *= 1.15f;
+				break;
+			case ArmourMod.New:
+				_defense *= 1.05f;
+				break;
+			case ArmourMod.Used:
+				break;
+			case ArmourMod.Old:
+				_defense *= .95f;
+				break;
+			case ArmourMod.Broken:
+				_defense *= .85f;
+				break;
 		}
 	}
 
@@ -112,6 +112,7 @@ public class Armour {
 			$"{(a1.Dodge>a2.Dodge ? ">" : "<")}  " +
 			$"{a2.Dodge.ToString().PadRight(12)}\n\n");
 
+		return rType;
 	}
 
 	public override string ToString() => Name;

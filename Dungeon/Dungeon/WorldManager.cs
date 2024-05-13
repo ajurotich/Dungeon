@@ -99,7 +99,7 @@ public class WorldManager {
 		}
 		Console.WriteLine("\n");
 
-		//currentWorld.DisplayAllObjects();
+		currentWorld.DisplayAllObjects();
 
 		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount-1];
 		switch(currentObject) {
@@ -189,7 +189,8 @@ public class WorldManager {
 				else 
 					Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
 
-                Console.WriteLine($"You feel {p.Descriptor}.");
+				Console.WriteLine($"You feel {p.Descriptor}.");
+
 
                 Program.player.Heal(healAmount);
 				break;
