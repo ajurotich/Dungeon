@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DungeonLibrary;
 
 public enum WeaponType {
-	Daggers, //low damage, easy
+	Dagger, //low damage, easy
 	Sword, //midlow damage, pretty easy
 	Axe, // midhigh damage
 	Hammer // hard
@@ -28,10 +28,11 @@ public class Weapon {
 	private float _damage, _difficulty;
 
 	//=== PROPS ===\\
-	public WeaponMod WeaponMod		=> _mod;
-	public WeaponType WeaponType	=> _type;
-	public float Damage				=> _damage;
-	public float Difficulty			=> _difficulty;
+	public WeaponType Type	=> _type;
+	public WeaponMod Mod	=> _mod;
+	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
+	public float Damage		=> _damage;
+	public float Difficulty	=> _difficulty;
 
 	//=== CTOR ===\\
 	public Weapon(WeaponType type) {
@@ -39,7 +40,7 @@ public class Weapon {
 		_mod = RandomMod();
 
 		switch(_type) {
-			case WeaponType.Daggers:
+			case WeaponType.Dagger:
 				_damage = 10;
 				_difficulty = 5;
 				break;
@@ -82,12 +83,42 @@ public class Weapon {
 
 		return rType;
 	}
-	public WeaponMod RandomMod() {
+
+	public static WeaponMod RandomMod() {
 		Random random = new Random();
 		Array values = Enum.GetValues(typeof(WeaponMod));
 		WeaponMod rType = (WeaponMod)values.GetValue(random.Next(values.Length));
 
 		return rType;
 	}
-}
 
+	public static void DisplayWeapon(Weapon w) {
+		Console.WriteLine(w);
+		for(int i = 0; i<w.Name.Length; i++) Console.Write("-");
+		Console.WriteLine($"\nDamage:	{w.Damage}");
+		Console.WriteLine($"Difficulty:	{w.Difficulty}\n");
+	}
+
+	public static void CompareWeapon(Weapon w1, Weapon w2) {
+		if(w1.Name == w2.Name) return;
+
+		Console.WriteLine("\n  COMPARE ARMOURS");
+		Console.WriteLine("===================\n");
+
+		Console.WriteLine($"Type:\t  " +
+			$"{w1.ToString().PadLeft(12)}     " +
+			$"{w2.ToString().PadRight(12)}");
+		Console.WriteLine($"Damage:\t  " +
+			$"{w1.Damage.ToString().PadLeft(12)}  " +
+			$"{(w1.Damage>w2.Damage ? ">" : "<")}  " +
+			$"{w2.Damage.ToString().PadRight(12)}");
+		Console.WriteLine($"Difficulty:" +
+			$"{w1.Difficulty.ToString().PadLeft(12)}  " +
+			$"{(w1.Difficulty>w2.Difficulty ? ">" : "<")}  " +
+			$"{w2.Difficulty.ToString().PadRight(12)}\n\n");
+
+	}
+
+	public override string ToString() => Name;
+
+}

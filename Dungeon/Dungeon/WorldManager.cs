@@ -97,15 +97,23 @@ public class WorldManager {
 			System.Threading.Thread.Sleep(500);
 			Console.Write(".");
 		}
+		Console.WriteLine("\n");
 
-		currentWorld.DisplayAllObjects();
+		//currentWorld.DisplayAllObjects();
 
 		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount-1];
 		switch(currentObject) {
 			case Armour a: {
-				Console.WriteLine($"Some {Enum.GetName(a.Mod)} {Enum.GetName(a.Type)} Armour!\n");
+				Armour pa = Program.player.Armour;
 
-				//todo display new and old armour stats before asking to swap
+				Console.WriteLine($"Some {a} armour!\n");
+
+				if(a.Name == pa.Name) {
+					Console.WriteLine("It seems to be the same armour you're already wearing.\n");
+					break;
+				}
+
+				Armour.CompareArmour(pa, a);
 
 				Console.WriteLine("Would you like to do with it?");
 				Console.WriteLine(
@@ -116,14 +124,13 @@ public class WorldManager {
 				while(loop) {
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
-							Console.WriteLine($"You discard the {Enum.GetName(Program.player.Armour.Type)}" +
-								$" and equip the {Enum.GetName(a.Type)}.");
+							Console.WriteLine($"You discard the {pa} and equip the {a}.");
 							Program.player.ChangeArmor(a);
 							loop = false;
 							break;
 
 						case "2":
-							Console.WriteLine("You decide to keep your current armour.");
+							Console.WriteLine($"You decide to keep your current {pa} armour.");
 							loop = false;
 							break;
 
@@ -135,9 +142,16 @@ public class WorldManager {
 			}
 
 			case Weapon w: {
-				Console.WriteLine($"A {Enum.GetName(w.WeaponMod)} {Enum.GetName(w.WeaponType)}!");
+				Weapon pw = Program.player.Weapon;
 
-				//todo display new and old weapon stats before asking to swap
+				Console.WriteLine($"A {w}!");
+
+				if(w.Name == pw.Name) {
+					Console.WriteLine("It seems to be the same weapon you're already using.");
+					break;
+				}
+
+				Weapon.CompareWeapon(pw, w);
 
 				Console.WriteLine("Would you like to do with it?");
 				Console.WriteLine(
@@ -148,14 +162,13 @@ public class WorldManager {
 				while(loop) {
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
-							Console.WriteLine($"You discard the {Enum.GetName(Program.player.Weapon.WeaponType)}" +
-								$" and equip the {Enum.GetName(w.WeaponType)}.");
+							Console.WriteLine($"You discard the {pw} and equip the {w}.");
 							Program.player.ChangeWeapon(w);
 							loop = false;
 							break;
 
 						case "2":
-							Console.WriteLine("You decide to keep your current weapon.");
+							Console.WriteLine($"You decide to keep your current {pw} weapon.");
 							loop = false;
 							break;
 
@@ -170,7 +183,13 @@ public class WorldManager {
 				float healAmount = p.HealPercent * Program.player.Race.MaxHealth / 100;
 					
 				Console.WriteLine($"A {p.Descriptor} health potion!");
-                Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
+
+				if(Program.player.Health == Program.player.Race.MaxHealth)
+					Console.WriteLine($"It seems you are at full health already, but you {p.Verb} the whole thing anyway.");
+				else 
+					Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
+
+                Console.WriteLine($"You feel {p.Descriptor}.");
 
                 Program.player.Heal(healAmount);
 				break;
