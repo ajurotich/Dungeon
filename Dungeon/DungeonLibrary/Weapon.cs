@@ -31,8 +31,8 @@ public class Weapon {
 	public WeaponType Type	=> _type;
 	public WeaponMod Mod	=> _mod;
 	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
-	public float Damage		=> _damage;
-	public float Difficulty	=> _difficulty;
+	public float Damage		=> MathF.Round(_damage, 2);
+	public float Difficulty	=> MathF.Round(_difficulty, 2);
 
 	//=== CTOR ===\\
 	public Weapon(WeaponType type) {
@@ -102,20 +102,20 @@ public class Weapon {
 	public static void CompareWeapon(Weapon w1, Weapon w2) {
 		if(w1.Name == w2.Name) return;
 
-		Console.WriteLine("\n  COMPARE ARMOURS");
-		Console.WriteLine("===================\n");
+		Console.WriteLine("\n  COMPARE WEAPONS");
+		Console.WriteLine(  "===================\n");
 
-		Console.WriteLine($"Type:\t  " +
-			$"{w1.ToString().PadLeft(12)}     " +
-			$"{w2.ToString().PadRight(12)}");
-		Console.WriteLine($"Damage:\t  " +
-			$"{w1.Damage.ToString().PadLeft(12)}  " +
-			$"{(w1.Damage>w2.Damage ? ">" : "<")}  " +
-			$"{w2.Damage.ToString().PadRight(12)}");
-		Console.WriteLine($"Difficulty:" +
-			$"{w1.Difficulty.ToString().PadLeft(12)}  " +
-			$"{(w1.Difficulty>w2.Difficulty ? ">" : "<")}  " +
-			$"{w2.Difficulty.ToString().PadRight(12)}\n\n");
+		Console.WriteLine	($"Type:	    " +
+			$"{w1.ToString().PadLeft(10)}   " +
+			$"{w2.ToString().PadRight(10)}");
+		Console.WriteLine(	$"Damage:	   " +
+			$"{w1.Damage.ToString().PadLeft(10)}  " +
+			$"{(w1.Damage==w2.Damage ? "=" : (w1.Damage>w2.Damage ? ">" : "<"))}  " +
+			$"{w2.Damage.ToString().PadRight(10)}");
+		Console.WriteLine(	$"Difficulty:" +
+			$"{w1.Difficulty.ToString().PadLeft(10)}  " +
+			$"{(w1.Difficulty==w2.Difficulty ? "=" : (w1.Difficulty>w2.Difficulty ? ">" : "<"))}  " +
+			$"{w2.Difficulty.ToString().PadRight(10)}\n\n");
 
 	}
 

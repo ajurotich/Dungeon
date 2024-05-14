@@ -9,8 +9,8 @@ namespace Dungeon;
 
 public enum MenuOptions {
 	Info,
-	Move,
 	Search,
+	Move,
 	Quit,
 }
 
@@ -18,35 +18,11 @@ public class Menu {
 
 	public static MenuOptions MenuSelect() {
 		Console.WriteLine("\nWhat would you like to do?");
-		for(int i = 0; i < 4; i++) 
+		for(int i = 0; i <= (int)MenuOptions.Quit; i++) 
 			Console.WriteLine($"{i+1}) {(MenuOptions)i}");
 
-		switch(Console.ReadLine().ToUpper().Trim() ) {
-			case "1":
-			case "I":
-			case "INFO":
-				return MenuOptions.Info;
+		return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
 
-			case "2":
-			case "M":
-			case "MOVE":
-				return MenuOptions.Move;
-
-			case "3":
-			case "S":
-			case "SEARCH":
-				return MenuOptions.Search;
-
-			case "4":
-			case "Q":
-			case "QUIT":
-				return MenuOptions.Quit;
-
-			default:
-				break;
-		}
-
-		return MenuOptions.Info;
 	}
 
 	public static void Info() {

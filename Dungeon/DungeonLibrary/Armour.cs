@@ -30,8 +30,8 @@ public class Armour {
 	public ArmourType Type	=> _type;
 	public ArmourMod Mod	=> _mod;
 	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
-	public float Dodge		=> _dodge;
-	public float Defense	=> _defense;
+	public float Dodge		=> MathF.Round(_dodge, 2);
+	public float Defense	=> MathF.Round(_defense, 2);
 
 	//=== CTOR ===\\
 	public Armour(ArmourType type) {
@@ -100,19 +100,17 @@ public class Armour {
 		Console.WriteLine("\n  COMPARE ARMOURS");
 		Console.WriteLine("===================\n");
 
-		Console.WriteLine($"Type:\t" +
-			$"{a1.ToString().PadLeft(12)}     " +
+		Console.WriteLine($"Type:\t " +
+			$"{a1.ToString().PadLeft(12)}   " +
 			$"{a2.ToString().PadRight(12)}");
 		Console.WriteLine($"Defense:" +
 			$"{a1.Defense.ToString().PadLeft(12)}  " +
-			$"{(a1.Defense>a2.Defense ? ">" : "<")}  " +
+			$"{(a1.Defense==a2.Defense ? "=" : (a1.Defense>a2.Defense ? ">" : "<"))}  " +
 			$"{a2.Defense.ToString().PadRight(12)}");
 		Console.WriteLine($"Dodge:\t" +
 			$"{a1.Dodge.ToString().PadLeft(12)}  " +
-			$"{(a1.Dodge>a2.Dodge ? ">" : "<")}  " +
+			$"{(a1.Dodge==a2.Dodge ? "=" : (a1.Dodge>a2.Dodge ? ">" : "<"))}  " +
 			$"{a2.Dodge.ToString().PadRight(12)}\n\n");
-
-		return rType;
 	}
 
 	public override string ToString() => Name;
