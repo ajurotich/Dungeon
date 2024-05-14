@@ -86,7 +86,7 @@ public class WorldManager {
 
 		if(currentWorld.Name == "" && currentWorld.Description == "") ChooseWorlds();
 
-		Console.WriteLine();
+		Console.Clear();
 		currentWorld.Display();
 
 	}
@@ -99,7 +99,7 @@ public class WorldManager {
 		}
 		Console.WriteLine("\n");
 
-		currentWorld.DisplayAllObjects();
+		//currentWorld.DisplayAllObjects();
 
 		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount-1];
 		switch(currentObject) {
@@ -124,12 +124,14 @@ public class WorldManager {
 				while(loop) {
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
+							Console.Clear();
 							Console.WriteLine($"You discard the {pa} and equip the {a}.");
 							Program.player.ChangeArmor(a);
 							loop = false;
 							break;
 
 						case "2":
+							Console.Clear();
 							Console.WriteLine($"You decide to keep your current {pa} armour.");
 							loop = false;
 							break;
@@ -189,7 +191,7 @@ public class WorldManager {
 				else 
 					Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
 
-				Console.WriteLine($"You feel {p.Descriptor}.");
+				Console.WriteLine($"You are feeling {p.Descriptor}.");
 
 
                 Program.player.Heal(healAmount);
