@@ -61,7 +61,6 @@ public class Entity {
 		int p = 16;
 
 		Console.WriteLine($"{("Health:").PadRight(p)}{Health}/{Race.MaxHealth}");
-		Console.WriteLine($"{("Skill:").PadRight(p)}{Race.Skill}");
 		Console.WriteLine($"{("Armour:").PadRight(p)}{Armour.Name}\n" +
 						$" {(">Defense:").PadRight(p)}{Armour.Defense}\n" +
 						$" {(">Dodge:").PadRight(p)}{Armour.Dodge}");
