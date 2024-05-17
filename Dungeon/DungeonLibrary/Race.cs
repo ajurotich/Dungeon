@@ -18,37 +18,37 @@ public class Race {
 
 	//=== FIELDS ===\\
 	private RaceType _type;
-	private byte _maxHealth, _maxSkill;
+	private float _maxHealth, _skill;
 
 	//=== PROPS ===\\
 	public RaceType Type	=> _type;
-	public byte MaxHealth	=> _maxHealth;
-	public byte MaxSkill	=> _maxSkill;
+	public float MaxHealth	=> _maxHealth;
+	public float Skill	=> _skill;
 
 	//=== CTOR ===\\
 	public Race(RaceType type){
 		_type = type;
 
 		switch(_type) {
-			case RaceType.Human:
-				_maxHealth = 50;
-				_maxSkill  = 50;
+			case RaceType.Goblin:
+				_maxHealth  = 40;
+				_skill		= 18f;
 				break;
 			case RaceType.Elf:
-				_maxHealth = 30;
-				_maxSkill  = 70;
+				_maxHealth  = 50;
+				_skill		= 16f;
+				break;
+			case RaceType.Human:
+				_maxHealth  = 60;
+				_skill		= 14;
 				break;
 			case RaceType.Dwarf:
-				_maxHealth = 70;
-				_maxSkill  = 30;
-				break;
-			case RaceType.Goblin:
-				_maxHealth = 20;
-				_maxSkill  = 80;
+				_maxHealth  = 70;
+				_skill		= 12f;
 				break;
 			case RaceType.Orc:
-				_maxHealth = 80;
-				_maxSkill  = 20;
+				_maxHealth  = 80;
+				_skill		= 10f;
 				break;
 		}
 	}
