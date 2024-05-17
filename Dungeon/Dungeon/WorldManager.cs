@@ -199,11 +199,8 @@ public class WorldManager {
 
 			case Entity e:
 				Console.WriteLine($"Nothing... but it seems a {Enum.GetName(e.Race.Type)} found you!");
-				Console.WriteLine("--BATTLE--");
-				//TODO FIGHT
-
-				if(Program.player.IsAlive)
-					Console.WriteLine("Congrats on getting out alive!\n");
+				
+				Combat.Fight(e);
 
 				break;
 

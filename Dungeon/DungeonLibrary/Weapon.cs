@@ -31,8 +31,8 @@ public class Weapon {
 	public WeaponType Type	=> _type;
 	public WeaponMod Mod	=> _mod;
 	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
-	public float Damage		=> MathF.Round(_damage, 2);
-	public float Difficulty	=> MathF.Round(_difficulty, 2);
+	public float Damage		=> MathF.Round(_damage, 1);
+	public float Difficulty	=> MathF.Round(_difficulty, 1);
 
 	//=== CTOR ===\\
 	public Weapon(WeaponType type) {
@@ -41,36 +41,40 @@ public class Weapon {
 
 		switch(_type) {
 			case WeaponType.Dagger:
-				_damage = 10;
-				_difficulty = 5;
+				_damage		= 15;
+				_difficulty = 2;
 				break;
 			case WeaponType.Sword:
-				_damage = 15;
-				_difficulty = 10;
+				_damage		= 20;
+				_difficulty = 4;
 				break;
 			case WeaponType.Axe:
-				_damage = 20;
-				_difficulty = 15;
+				_damage		= 25;
+				_difficulty = 6;
 				break;
 			case WeaponType.Hammer:
-				_damage = 25;
-				_difficulty = 20;
+				_damage		= 30;
+				_difficulty = 8;
 				break;
 		}
 		switch(_mod) {
 			case WeaponMod.Epic:
-				_damage *= 1.15f;
+				_damage		+= 5;
+				_difficulty	-= 2;
 				break;
 			case WeaponMod.New:
-				_damage *= 1.05f;
+				_damage     += 2.5f;
+				_difficulty -= 1;
 				break;
 			case WeaponMod.Used:
 				break;
 			case WeaponMod.Old:
-				_damage *= .95f;
+				_damage     -= 2.5f;
+				_difficulty += 1;
 				break;
 			case WeaponMod.Broken:
-				_damage *= .85f;
+				_damage     -= 5;
+				_difficulty += 2;
 				break;
 		}
 	}

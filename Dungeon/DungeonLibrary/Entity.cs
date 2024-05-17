@@ -12,7 +12,6 @@ public class Entity {
 	//=== FIELDS ===\\
 	private string _name;
 	protected float _health;
-	private float _skill;
 	private bool _isAlive;
 	private Race _race;
 	protected Armour _armour;
@@ -20,8 +19,7 @@ public class Entity {
 
 	//=== PROPERTIES ===\\
 	public string Name	 => _name;
-	public float Health	 => _health;
-	public float Skill	 => _skill;
+	public float Health	 => MathF.Round(_health, 1);
 	public bool IsAlive	 => _isAlive;
 	public Race Race	 => _race;
 	public Armour Armour => _armour;
@@ -33,7 +31,6 @@ public class Entity {
 
 		_race = race;
 		_health = race.MaxHealth;
-		_skill = race.MaxSkill;
 		_isAlive = true;
 
 		_armour = armour;
@@ -42,25 +39,38 @@ public class Entity {
 
 	//=== METHODS ===\\
 	public float Damage(float damageAmount) {
-		_health -= damageAmount;
+		if(damageAmount <= 0) return Health;
 
-		if(Health < 0) _isAlive = false;
+		_health -= MathF.Round(damageAmount, 1);
+
+		if(Health <= 0) _isAlive = false;
 
 		return Health;
 	}
-	public void Display() {
-		Console.WriteLine("\n=====");
-        Console.WriteLine($"DISPLAYING \'{Name}\' the {Enum.GetName(Race.Type)}:");
 
-		Console.WriteLine($"Health:	{Health}/{Race.MaxHealth}");
-		Console.WriteLine($"Skill:	{Skill}");
-		Console.WriteLine($"Armour:	{Armour.Name}\n" +
-						$"  >Defense:\t{Armour.Defense}\n" +
-						$"  >Dodge:\t{Armour.Dodge}");
-		Console.WriteLine($"Weapon:	{Weapon.Name}\n" +
-						$"  >Damage:\t{Weapon.Damage}\n" +
-						$"  >Difficulty:\t{Weapon.Difficulty}");
-		Console.WriteLine("=====");
+	public float Heal(float healAmount) {
+		Math.Clamp((_health += MathF.Round(healAmount, 1)), 0, Race.MaxHealth);
+		return Health;
+	}
+
+	public void Display() {
+		for(int i= 0; i < 80; i++) Console.Write("=");
+
+        Console.WriteLine($"\nDisplaying \'{Name}\' the {Enum.GetName(Race.Type)}:\n");
+
+		int p = 16;
+
+		Console.WriteLine($"{("Health:").PadRight(p)}{Health}/{Race.MaxHealth}");
+		Console.WriteLine($"{("Skill:").PadRight(p)}{Race.Skill}");
+		Console.WriteLine($"{("Armour:").PadRight(p)}{Armour.Name}\n" +
+						$" {(">Defense:").PadRight(p)}{Armour.Defense}\n" +
+						$" {(">Dodge:").PadRight(p)}{Armour.Dodge}");
+		Console.WriteLine($"{("Weapon:").PadRight(p)}{Weapon.Name}\n" +
+						$" {(">Damage:").PadRight(p)}{Weapon.Damage}\n" +
+						$" {(">Difficulty:").PadRight(p)}{Weapon.Difficulty}");
+
+		for(int i= 0; i < 80; i++) Console.Write("=");
+		Console.WriteLine("\n");
     }
 	
 }
@@ -122,16 +132,16 @@ public class Player : Entity {
 
 		return new Player(nameChoice, new Race(rType));
 	}
+
 	public void IncrementKillCount() {
 		_killCount++;
 	}
-	public float Heal(float healAmount) {
-		Math.Clamp(_health += healAmount, 0, Race.MaxHealth);
-		return Health;
-	}
+
+
 	public void ChangeArmor(Armour armor) {
 		_armour = armor;
 	}
+
 	public void ChangeWeapon(Weapon weapon) {
 		_weapon = weapon;
 	}

@@ -30,8 +30,8 @@ public class Armour {
 	public ArmourType Type	=> _type;
 	public ArmourMod Mod	=> _mod;
 	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
-	public float Dodge		=> MathF.Round(_dodge, 2);
-	public float Defense	=> MathF.Round(_defense, 2);
+	public float Dodge		=> MathF.Round(_dodge, 1);
+	public float Defense	=> MathF.Round(_defense, 1);
 
 	//=== CTOR ===\\
 	public Armour(ArmourType type) {
@@ -40,32 +40,36 @@ public class Armour {
 
 		switch (_type) {
 			case ArmourType.Light:
-				_dodge = .3f;
-				_defense = .2f;
+				_dodge		= 15;
+				_defense	= 5;
 				break;
 			case ArmourType.Medium:
-				_dodge = .2f;
-				_defense = .4f;
+				_dodge		= 10;
+				_defense	= 10;
 				break;
 			case ArmourType.Heavy:
-				_dodge = .1f;
-				_defense = .6f;
+				_dodge		= 5;
+				_defense	= 15;
 				break;
 		}
 		switch (_mod) {
 			case ArmourMod.Epic:
-				_defense *= 1.15f;
+				_defense	+= 2f;
+				_dodge		+= 2f;
 				break;
 			case ArmourMod.New:
-				_defense *= 1.05f;
+				_defense    += 1f;
+				_dodge      += 1f;
 				break;
 			case ArmourMod.Used:
 				break;
 			case ArmourMod.Old:
-				_defense *= .95f;
+				_defense    -= 1f;
+				_dodge      -= 1f;
 				break;
 			case ArmourMod.Broken:
-				_defense *= .85f;
+				_defense    -= 2f;
+				_dodge      -= 2f;
 				break;
 		}
 	}
