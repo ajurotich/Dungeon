@@ -19,8 +19,8 @@ class Program {
 		Signature.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
 		//=== VARIABLES/SETUP ===\\
-		//player = Player.CreateCharacter();
-		Combat.Fight(new Entity("enemy", new Race(Race.RandomType()), new Armour(Armour.RandomType()), new Weapon(Weapon.RandomType())));
+		player = Player.CreateCharacter();
+		//Combat.Fight(new Entity("enemy", new Race(Race.RandomType()), new Armour(Armour.RandomType()), new Weapon(Weapon.RandomType())));
 		WorldManager.CreateWorlds();
 
 		//=== FIRST ROUND ===\\
