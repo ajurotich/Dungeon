@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DungeonLibrary;
+using Common;
 
 namespace Dungeon;
 
@@ -19,6 +20,7 @@ public class Combat {
 	public static void Fight(Entity enemy) {
 		Console.Clear();
 		Console.WriteLine("\n===BATTLE===\n");
+		General.Ellipsis("Preparing for battle");
 
 		//=== VARIABLES ===\\
 		Player player = Program.player;
@@ -94,10 +96,13 @@ public class Combat {
 	}
 
 	internal static CombatOptions CombatSelect() {
-		Console.WriteLine("\nWhat would you like to do?");
+		General.Border();
+
+		Console.WriteLine("What would you like to do?\n");
 		for(int i = 0; i <= (int)CombatOptions.Flee; i++)
 			Console.WriteLine($"{i+1}) {(CombatOptions)i}");
 
+		Console.Write("\n>> ");
 		return (CombatOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)CombatOptions.Flee) ? num : 0);
 
 	}
@@ -222,7 +227,7 @@ public class Combat {
 				if attacker and defender choose block, neither take damage and
 				both heal slightly, attacker heals more though
 				 */
-				Console.WriteLine(Signature.Wrap($"\nBoth opponents choose to block! The temporary break in the fight allows you to regain some health.", 80));
+				Console.WriteLine(General.Wrap($"\nBoth opponents choose to block! The temporary break in the fight allows you to regain some health."));
 
 				//heal attacker
 				if(attacker.Health <= attacker.Race.MaxHealth * .75f) {

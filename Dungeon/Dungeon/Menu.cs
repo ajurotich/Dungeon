@@ -17,11 +17,14 @@ public enum MenuOptions {
 public class Menu {
 
 	public static MenuOptions MenuSelect() {
-		Console.WriteLine("\nWhat would you like to do?");
+		Common.General.Border();
+
+		Console.WriteLine("What would you like to do?\n");
 		for(int i = 0; i <= (int)MenuOptions.Quit; i++) 
 			Console.WriteLine($"{i+1}) {(MenuOptions)i}");
 
-		return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
+        Console.Write("\n>> ");
+        return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
 
 	}
 
