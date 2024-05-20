@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace DungeonLibrary;
 
@@ -31,14 +32,14 @@ public class World {
 	public World(string name, string description) {
 		_name = name;
 		_description = description;
-		_searchAmount = new Random().Next(3,7);
+		_searchAmount = new Random().Next(4,8);
 
 		_worldObjects = new Object[_searchAmount];
 		for(int i=0; i<_searchAmount; i++) {
 			_worldObjects[i] = (new Random().Next(1, 101)) switch { 
-				>0  and <=25 => new Armour(Armour.RandomType()),
-				>25 and <=50 => new Weapon(Weapon.RandomType()),
-				>50 and <=75 => new Potion(),
+				>0  and <=20 => new Armour(Armour.RandomType()),
+				>20 and <=40 => new Weapon(Weapon.RandomType()),
+				>40 and <=55 => new Potion(),
 				_ => new Entity("name",
 					new Race(Race.RandomType()),
 					new Armour(Armour.RandomType()),
@@ -52,8 +53,12 @@ public class World {
 	//=== METHODS ===\\
 	public void Display() {
 		Console.WriteLine(Name + "\n");
-		Console.WriteLine(Signature.Wrap(Description, 80) + "\n");
-		if(!IsSearched) Console.WriteLine("There's more to discover here.");
+		Console.WriteLine(General.Wrap(Description) + "\n");
+
+		if(!IsSearched) {
+			Console.CursorTop = 28;
+			Console.WriteLine("There's more to discover here.");
+		}
 	}
 	public void DisplayAllObjects() {
 		Console.WriteLine("\nWorlds Remaining Objects\n{");
