@@ -27,6 +27,7 @@ public class World {
 	public World(bool isSearched) {
 		_name = "";
 		_description = "";
+		_searchAmount = _isSearched ? 0 : 1;
 		_isSearched = isSearched;
 	}
 	public World(string name, string description) {
