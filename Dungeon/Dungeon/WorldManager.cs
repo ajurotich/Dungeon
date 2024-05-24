@@ -144,7 +144,7 @@ public class WorldManager {
 						case "1":
 							Console.CursorTop = cursorHeight;
 							Console.WriteLine($"You discard the {pa} and equip the {a}.");
-							Program.player.ChangeArmor(a);
+							Program.player.ChangeArmour(a);
 							loop = false;
 							break;
 

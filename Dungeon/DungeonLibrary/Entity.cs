@@ -49,7 +49,7 @@ public class Entity {
 	}
 
 	public float Heal(float healAmount) {
-		Math.Clamp((_health += MathF.Round(healAmount, 1)), 0, Race.MaxHealth);
+		_health = Math.Clamp((_health += MathF.Round(healAmount, 1)), 0, Race.MaxHealth);
 		return Health;
 	}
 
@@ -136,9 +136,8 @@ public class Player : Entity {
 		_killCount++;
 	}
 
-
-	public void ChangeArmor(Armour armor) {
-		_armour = armor;
+	public void ChangeArmour(Armour armour) {
+		_armour = armour;
 	}
 
 	public void ChangeWeapon(Weapon weapon) {
