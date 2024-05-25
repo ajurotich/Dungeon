@@ -37,6 +37,7 @@ public class WorldManager {
 	};
 	private static World[] worldList = new World[names.Length];
 	private static World currentWorld = new World(true);
+	public static int remainingWorlds = worldList.Length;
 
 	//=== FUNCTIONS ===\\
 	public static void CreateWorlds() {
@@ -60,9 +61,8 @@ public class WorldManager {
 
 	public static void ChooseWorlds() {
 
-		int remainingWorlds = 0;
-		foreach(World world in worldList) 
-			if(!world.IsSearched) remainingWorlds++;
+		//foreach(World world in worldList) 
+		//	if(!world.IsSearched) remainingWorlds++;
 
 		General.Border();
 		if(remainingWorlds !=0) {
@@ -221,7 +221,7 @@ public class WorldManager {
 				break;
 
 			case Entity e:
-				Console.WriteLine($"Nothing... but it seems a {Enum.GetName(e.Race.Type)} found you!\n");
+				Console.WriteLine($"Nothing... but it seems a{((e.Race.Type==RaceType.Elf || e.Race.Type==RaceType.Orc) ? "n" : "")} {Enum.GetName(e.Race.Type)} found you!\n");
 				General.WaitForInput();
 
 				Combat.Fight(e);

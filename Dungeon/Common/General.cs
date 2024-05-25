@@ -39,7 +39,7 @@ public class General {
 
 	public static void Border() {
 		Console.SetCursorPosition(0, 28);
-		for(int i = 0; i<9; i++) Console.WriteLine(new string (' ', 80));
+		for(int i = 0; i<11; i++) Console.WriteLine(new string (' ', 80));
 
 		Console.SetCursorPosition(0, 28);
 		Console.WriteLine(new string('=', 80) + '\n');
@@ -47,7 +47,7 @@ public class General {
 
 	public static void WaitForInput() {
 		Border();
-		Console.Write("\nPress any key to continue...");
+		Console.Write("Press any key to continue...");
 
 		Console.ReadKey(true);
 		Console.SetCursorPosition(0, Console.CursorTop);

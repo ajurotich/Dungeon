@@ -37,15 +37,26 @@ public class World {
 
 		_worldObjects = new Object[_searchAmount];
 		for(int i=0; i<_searchAmount; i++) {
-			_worldObjects[i] = (new Random().Next(1, 101)) switch { 
-				>0  and <=20 => new Armour(Armour.RandomType()),
-				>20 and <=40 => new Weapon(Weapon.RandomType()),
-				>40 and <=55 => new Potion(),
-				_ => new Entity("name",
-					new Race(Race.RandomType()),
+
+			if(new Random().Next(1, 101) > 50) {
+				RaceType rt = Race.RandomType();
+
+				_worldObjects[i] = new Entity(
+					RaceNames.GetRandomName(rt),
+					new Race(rt),
 					new Armour(Armour.RandomType()),
-					new Weapon(Weapon.RandomType()))
-			};
+					new Weapon(Weapon.RandomType())
+				);
+
+			}
+			else {
+				_worldObjects[i] = (new Random().Next(1, 51)) switch {
+					>0  and <=15 => new Armour(Armour.RandomType()),
+					>15 and <=30 => new Weapon(Weapon.RandomType()),
+					_ => new Potion(),
+				};
+			}
+
 		}
 
 		_isSearched = false;

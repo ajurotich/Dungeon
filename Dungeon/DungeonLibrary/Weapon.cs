@@ -109,17 +109,18 @@ public class Weapon {
 		Console.WriteLine("\n  COMPARE WEAPONS");
 		Console.WriteLine(  "===================\n");
 
+		int padSize = 13;
 		Console.WriteLine	($"Type:	    " +
-			$"{w1.ToString().PadLeft(10)}   " +
-			$"{w2.ToString().PadRight(10)}");
+			$"{w1.ToString().PadLeft(padSize)}   " +
+			$"{w2.ToString().PadRight(padSize)}");
 		Console.WriteLine(	$"Damage:	   " +
-			$"{w1.Damage.ToString().PadLeft(10)}  " +
+			$"{w1.Damage.ToString().PadLeft(padSize)}  " +
 			$"{(w1.Damage==w2.Damage ? "=" : (w1.Damage>w2.Damage ? ">" : "<"))}  " +
-			$"{w2.Damage.ToString().PadRight(10)}");
+			$"{w2.Damage.ToString().PadRight(padSize)}");
 		Console.WriteLine(	$"Difficulty:" +
-			$"{w1.Difficulty.ToString().PadLeft(10)}  " +
+			$"{w1.Difficulty.ToString().PadLeft(padSize)}  " +
 			$"{(w1.Difficulty==w2.Difficulty ? "=" : (w1.Difficulty>w2.Difficulty ? ">" : "<"))}  " +
-			$"{w2.Difficulty.ToString().PadRight(10)}\n\n");
+			$"{w2.Difficulty.ToString().PadRight(padSize)}\n\n");
 
 	}
 

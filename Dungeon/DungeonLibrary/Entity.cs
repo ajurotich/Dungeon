@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace DungeonLibrary;
 
@@ -18,7 +20,7 @@ public class Entity {
 	protected Weapon _weapon;
 
 	//=== PROPERTIES ===\\
-	public string Name	 => _name;
+	public string Name	 => _name.ToUpper();
 	public float Health	 => MathF.Round(_health, 1);
 	public bool IsAlive	 => _isAlive;
 	public Race Race	 => _race;
@@ -56,7 +58,7 @@ public class Entity {
 	public void Display() {
 		for(int i= 0; i < 80; i++) Console.Write("=");
 
-        Console.WriteLine($"\nDisplaying \'{Name}\' the {Enum.GetName(Race.Type)}:\n");
+		Console.WriteLine($"\nDisplaying \'{Name}\' the {Enum.GetName(Race.Type)}:\n");
 
 		int p = 16;
 
@@ -70,7 +72,7 @@ public class Entity {
 
 		for(int i= 0; i < 80; i++) Console.Write("=");
 		Console.WriteLine("\n");
-    }
+	}
 	
 }
 
@@ -94,33 +96,74 @@ public class Player : Entity {
 
 	//=== METHODS ===\\
 	public static Player CreateCharacter() {
-		Console.WriteLine("NAME YOUR CHARACTER");
-		string nameChoice = Console.ReadLine();
 
-		Array values = Enum.GetValues(typeof(RaceType));
+		Console.Title = "CHARACTER CREATOR";
+
+		//=== VARIABLES ===\\
+		string? nameChoice = null;
 		RaceType rType;
+		int charConfirm;
 
-		int charConfirm = 2;
 		do {
-			Console.WriteLine("Choose your race:\n" +
-			"(H) Human (default)\n" +
-			"(E) Elf\n" +
-			"(D) Dwarf\n" +
-			"(G) Goblin\n" +
-			"(O) Orc");
-			int choice = Console.ReadLine().ToUpper().Trim() switch {
-				"H" => 0,
-				"E" => 1,
-				"D" => 2,
-				"G" => 3,
-				"O" => 4,
-				_ => 0
-			};
-			rType = (RaceType)values.GetValue(choice);
+			Console.Clear();
+			Console.WriteLine("YOUR CHARACTER");
 
-			Console.WriteLine($"You wish to be a {(RaceType)choice}? Y/N");
+			//=== NAME ===\\
+			Console.Write("\nName: ");
+			int[] cursorPos = [Console.CursorLeft, Console.CursorTop];
+
+			while(true) { 
+				General.Border();
+				Console.WriteLine("What would you like to name your character?");
+				Console.Write("\n>> ");
+				nameChoice = Console.ReadLine();
+
+				if(!string.IsNullOrEmpty(nameChoice.Trim())) break;
+			}
+
+			Console.SetCursorPosition(cursorPos[0], cursorPos[1]);
+			Console.Write(nameChoice.ToUpper());
+
+
+			//=== RACE ===\\
+			Console.Write("\nRace: ");
+			cursorPos = [Console.CursorLeft, Console.CursorTop];
+			string input;
+
+			while(true) {
+				General.Border();
+				Console.WriteLine("Choose your race:\n" +
+				"1. Human\n" +
+				"2. Elf\n" +
+				"3. Dwarf\n" +
+				"4. Goblin\n" +
+				"5. Orc");
+				Console.Write("\n>> ");
+
+				input = Console.ReadLine().Trim().ToUpper();
+				if(Regex.IsMatch(input, "^[1-5]$")) break;
+			}
+
+			rType = input switch {
+				"1" => RaceType.Human,
+				"2" => RaceType.Elf,
+				"3" => RaceType.Dwarf,
+				"4" => RaceType.Goblin,
+				"5" => RaceType.Orc,
+				 _  => Race.RandomType()
+			};			
+
+			Console.SetCursorPosition(cursorPos[0], cursorPos[1]);
+			Console.Write(Enum.GetName(rType).ToUpper());
+
+
+
+			//=== CONFIRMATION===\\
 			do {
-				charConfirm = Console.ReadLine().ToUpper().Trim() switch {
+				General.Border();
+				Console.WriteLine($"Does this look correct? Y/N");
+				Console.Write("\n>> ");
+				charConfirm = Console.ReadLine().Trim().ToUpper() switch {
 					"Y" => 0,
 					"N" => 1,
 					_ => 2

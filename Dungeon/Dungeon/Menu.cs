@@ -23,8 +23,8 @@ public class Menu {
 		for(int i = 0; i <= (int)MenuOptions.Quit; i++) 
 			Console.WriteLine($"{i+1}) {(MenuOptions)i}");
 
-        Console.Write("\n>> ");
-        return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
+		Console.Write("\n>> ");
+		return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
 
 	}
 
@@ -39,12 +39,15 @@ public class Menu {
 		Console.WriteLine("\n===MOVE===\n");
 
 		if(!WorldManager.CurrentWorld.IsSearched) {
-			Console.WriteLine("There's more to discover here, but you may return later.\n" +
-				"Are you sure you want to leave? Y/N");
+			Console.WriteLine("There's more to discover here, but you may return later.\n");
 
 			bool loop = true;
-			while (loop) 
-				switch(Console.ReadLine().ToUpper().Trim()) {
+			while (loop) {
+				Common.General.Border();
+				Console.WriteLine("Are you sure you want to leave? Y/N");
+				Console.Write("\n>> ");
+
+				switch(Console.ReadLine().Trim().ToUpper()) {
 					case "Y":
 					case "YES":
 						loop = false;
@@ -54,6 +57,7 @@ public class Menu {
 						return;
 					default: break;
 				}
+			}
 		}
 
 		WorldManager.ChooseWorlds();
@@ -64,8 +68,11 @@ public class Menu {
 		Console.WriteLine("\n===SEARCH===\n");
 
 		if(!WorldManager.CurrentWorld.IsSearched) WorldManager.SearchWorld();
-		else Console.WriteLine("You try to search, but it seems there's nothing else of value here.\n" +
+		else {
+			Console.WriteLine("You try to search, but it seems there's nothing else of value here.\n" +
 				"World complete!");
+			WorldManager.remainingWorlds--;
+		}
 
 		}
 
