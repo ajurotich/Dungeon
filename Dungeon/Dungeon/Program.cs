@@ -17,10 +17,11 @@ class Program {
 		Console.BufferWidth = 80;
 		Console.BufferHeight = 40;
 #pragma warning restore CA1416 // Validate platform compatibility
-		General.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 
 		//=== VARIABLES/SETUP ===\\
-		//player = Player.CreateCharacter();
+		player = Player.CreateCharacter();
+		Console.Clear();
+		General.Header("THE DUNGEON OF NAVIA", "Your adventure awaits...");
 		//Combat.Fight(new Entity("enemy", new Race(Race.RandomType()), new Armour(Armour.RandomType()), new Weapon(Weapon.RandomType())));
 		WorldManager.CreateWorlds();
 

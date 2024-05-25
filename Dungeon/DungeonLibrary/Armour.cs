@@ -104,17 +104,18 @@ public class Armour {
 		Console.WriteLine("\n  COMPARE ARMOURS");
 		Console.WriteLine("===================\n");
 
+		int padSize = 13;
 		Console.WriteLine($"Type:\t " +
-			$"{a1.ToString().PadLeft(12)}   " +
-			$"{a2.ToString().PadRight(12)}");
+			$"{a1.ToString().PadLeft(padSize)}   " +
+			$"{a2.ToString().PadRight(padSize)}");
 		Console.WriteLine($"Defense:" +
-			$"{a1.Defense.ToString().PadLeft(12)}  " +
+			$"{a1.Defense.ToString().PadLeft(padSize)}  " +
 			$"{(a1.Defense==a2.Defense ? "=" : (a1.Defense>a2.Defense ? ">" : "<"))}  " +
-			$"{a2.Defense.ToString().PadRight(12)}");
+			$"{a2.Defense.ToString().PadRight(padSize)}");
 		Console.WriteLine($"Dodge:\t" +
-			$"{a1.Dodge.ToString().PadLeft(12)}  " +
+			$"{a1.Dodge.ToString().PadLeft(padSize)}  " +
 			$"{(a1.Dodge==a2.Dodge ? "=" : (a1.Dodge>a2.Dodge ? ">" : "<"))}  " +
-			$"{a2.Dodge.ToString().PadRight(12)}\n\n");
+			$"{a2.Dodge.ToString().PadRight(padSize)}\n\n");
 	}
 
 	public override string ToString() => Name;
