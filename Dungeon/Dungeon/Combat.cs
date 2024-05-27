@@ -18,41 +18,24 @@ internal enum CombatOptions {
 public class Combat {
 
 	public static void Fight(Entity enemy) {
-		Console.Clear();
-		Console.WriteLine("\n===BATTLE===\n");
-		General.Ellipsis("Preparing for battle");
+		Writer.Clear();
+		Writer.Ellipsis("Preparing for battle");
 
 		//=== VARIABLES ===\\
 		Player player = Program.player;
-		//Entity attacker, defender;
 		CombatOptions playerChoice, enemyChoice;
 		Random rand = new();
-
-		//Console.WriteLine($"{player.Armour.Dodge} vs {enemy.Armour.Dodge}");
-
-		////decides who starts attacking
-		//if (player.Armour.Dodge >= enemy.Armour.Dodge) {
-		//	Console.WriteLine("You will attack first.");
-		//	attacker = player;
-		//	defender = enemy;
-		//}
-		//else {
-		//	Console.WriteLine("The enemy will attack first.");
-		//	attacker = enemy;
-		//	defender = player;
-		//}
-
+		enemy.Damage(rand.NextSingle() * .2f * enemy.Race.MaxHealth);
 
 		//loop for combat
-		bool loop = true;
-		while(loop) {
+		while(true) {
 
 			//choices
 			playerChoice = CombatSelect();
 			enemyChoice = (rand.Next(2) == 0) ? CombatOptions.Attack : CombatOptions.Block;
-			Console.Clear();
-			Console.WriteLine($"\nYou choose: {(Enum.GetName(playerChoice).ToUpper())}");
-			Console.WriteLine($"{enemy.Name} chooses: {(Enum.GetName(enemyChoice).ToUpper())}");
+			Writer.Clear();
+			Writer.WriteLine($"You choose: {(Enum.GetName(playerChoice).ToUpper())}");
+			Writer.WriteLine($"{enemy.Name} chooses: {(Enum.GetName(enemyChoice).ToUpper())}\n");
 
 			if     (playerChoice == CombatOptions.Info) {
 				Info(player, enemy);
@@ -68,34 +51,36 @@ public class Combat {
 			if(!player.IsAlive || !enemy.IsAlive) break;
 
 			//display health
-			Console.CursorTop = 25;
-			Console.WriteLine($"{($"{player.Name}'s health:").ToString().PadRight(20)}{player.Health}/{player.Race.MaxHealth}");
-			Console.WriteLine($"{( $"{enemy.Name}'s health:").ToString().PadRight(20)}{enemy.Health}/{enemy.Race.MaxHealth}");
+			Console.CursorTop = 26;
+			Writer.WriteLine($"{($"{player.Name}'s health:").ToString().PadRight(20)}{player.Health}/{player.Race.MaxHealth}");
+			Writer.WriteLine($"{( $"{enemy.Name}'s health:").ToString().PadRight(20)}{enemy.Health}/{enemy.Race.MaxHealth}");
 
 		}
 
 		//win/lose conditions
 		Console.CursorTop = 25;
 		if(player.IsAlive) {
-			Console.WriteLine("\nCongratulations! You won the fight!");
+			Writer.WriteLine("\nCongratulations! You won the fight!");
 			player.IncrementKillCount();
 
-			Console.WriteLine($"{player.Name} regained strength and healed {Heal(player, .25f)} HP.");
+			Writer.WriteLine($"{player.Name} regained strength and healed {Heal(player, .25f)} HP.");
 		}
-		else Console.WriteLine("\nWelp. Your dead.");
+		else Writer.WriteLine("\nWelp. Your dead.");
 
 		General.WaitForInput();
 
+		Menu.Info();
 	}
 
 	internal static CombatOptions CombatSelect() {
-		General.Border();
+		Writer.CursorBottom();
 
-		Console.WriteLine("What would you like to do?\n");
+		Writer.WriteLine("What would you like to do?\n");
 		for(int i = 0; i <= (int)CombatOptions.Flee; i++)
-			Console.WriteLine($"{i+1}) {(CombatOptions)i}");
+			Writer.WriteLine($"{i+1}) {(CombatOptions)i}");
 
-		Console.Write("\n>> ");
+		Writer.WriteLine();
+		Writer.Write(">> ");
 		return (CombatOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)CombatOptions.Flee) ? num : 0);
 
 	}
@@ -123,27 +108,27 @@ public class Combat {
 
 				//calc if atk hit
 				//def takes damage - armour
-				Console.WriteLine($"\n{attacker.Name} attacks {defender.Name}...");
+				Writer.WriteLine($"\n{attacker.Name} attacks {defender.Name}...");
 
 				if(DoesHit(attacker, defender)) {
 					float dmg = attacker.Weapon.Damage * (1 - defender.Armour.Defense/20);
 					dmg = MathF.Round(dmg, 1);
 					defender.Damage(dmg);
-					Console.WriteLine($"...and hits, dealing {dmg} damage!");
+					Writer.WriteLine($"...and hits, dealing {dmg} damage!\n");
 				}
-				else Console.WriteLine("...but misses.");
+				else Writer.WriteLine("...but misses.\n");
 
 				//calc if def hit
 				//atk takes half damage - armour
-				Console.WriteLine($"\n{defender.Name} attacks {attacker.Name} back...");
+				Writer.WriteLine($"\n{defender.Name} attacks {attacker.Name} back...");
 
 				if(DoesHit(defender, attacker)) {
 					float dmg = defender.Weapon.Damage * (1 - attacker.Armour.Defense/20) * .75f;
 					dmg = MathF.Round(dmg, 1);
 					attacker.Damage(dmg);
-					Console.WriteLine($"...and hits, dealing {dmg} damage!");
+					Writer.WriteLine($"...and hits, dealing {dmg} damage!\n");
 				}
-				else Console.WriteLine("...but misses.");
+				else Writer.WriteLine("...but misses.\n");
 
 
 				return;
@@ -156,27 +141,27 @@ public class Combat {
 
 				//calc if atk hit
 				//def takes damage - armour
-				Console.WriteLine($"\n{attacker.Name} attacks {defender.Name}...");
+				Writer.WriteLine($"\n{attacker.Name} attacks {defender.Name}...");
 
 				if(DoesHit(attacker, defender)) {
 					float dmg = attacker.Weapon.Damage * (1 - defender.Armour.Defense/20) * .6f;
 					dmg = MathF.Round(dmg, 1);
 					defender.Damage(dmg);
-					Console.WriteLine($"...and hits, dealing {MathF.Round(dmg, 1)} damage!");
+					Writer.WriteLine($"...and hits, dealing {MathF.Round(dmg, 1)} damage!\n");
 
 					if(defender.Health <= defender.Race.MaxHealth * .3f)
-						Console.WriteLine($"\n{defender.Name} regained strength and healed {Heal(defender, .15f)} HP.");
+						Writer.WriteLine($"{defender.Name} regained strength and healed {Heal(defender, .15f)} HP.");
 				}
 				else {
-					Console.WriteLine($"...but misses.");
+					Writer.WriteLine($"...but misses.\n");
 					if(defender.Health <= defender.Race.MaxHealth * .4f)
-						Console.WriteLine($"\n{defender.Name} regained strength and healed {Heal(defender, .20f)} HP.");
+						Writer.WriteLine($"\n{defender.Name} regained strength and healed {Heal(defender, .20f)} HP.");
 				}
 
 				return;
 			}
 			default: {
-				Console.WriteLine("ERROR: Invalid defChoice inside attack.");
+				Writer.WriteLine("ERROR: Invalid defChoice inside attack.");
 				return;
 			}
 		}
@@ -201,21 +186,21 @@ public class Combat {
 				if attacker chooses block and defender chooses attack, defender
 				takes no damage, attacker takes small damage
 				 */
-				Console.WriteLine($"\n{defender.Name} attacks {attacker.Name}...");
+				Writer.WriteLine($"\n{defender.Name} attacks {attacker.Name}...");
 
 				if(DoesHit(defender, attacker)) {
 					float dmg = defender.Weapon.Damage * (1 - attacker.Armour.Defense/20) * .2f;
 					dmg = MathF.Round(dmg, 1);
 					attacker.Damage(dmg);
-					Console.WriteLine($"...and hits, dealing {dmg} damage!");
+					Writer.WriteLine($"...and hits, dealing {dmg} damage!\n");
 
 					if(attacker.Health <= attacker.Race.MaxHealth * .5f)
-						Console.WriteLine($"\n{attacker.Name} regained strength and healed {Heal(attacker, .2f)} HP.");
+						Writer.WriteLine($"{attacker.Name} regained strength and healed {Heal(attacker, .2f)} HP.");
 				}
 				else {
-					Console.WriteLine($"...but misses.");
+					Writer.WriteLine($"...but misses.\n");
 					if(attacker.Health <= attacker.Race.MaxHealth * .6f)
-						Console.WriteLine($"\n{attacker.Name} regained strength and healed {Heal(attacker, .25f)} HP.");
+						Writer.WriteLine($"{attacker.Name} regained strength and healed {Heal(attacker, .25f)} HP.");
 					
 				}
 				
@@ -227,23 +212,23 @@ public class Combat {
 				if attacker and defender choose block, neither take damage and
 				both heal slightly, attacker heals more though
 				 */
-				Console.WriteLine("\n\n");
-				Console.WriteLine(General.Wrap($"Both opponents choose to block! The temporary break in the fight allows you to regain some health.\n"));
+				Writer.WriteLine();
+				Writer.WriteLine($"Both opponents choose to block! The temporary break in the fight allows you to regain some health.\n");
 
 				//heal attacker
 				if(attacker.Health <= attacker.Race.MaxHealth * .75f) 
-					 Console.WriteLine($"{attacker.Name} regained {Heal(attacker, .25f)} HP.");
-				else Console.WriteLine($"{attacker.Name} is already quite healthy and doesn't heal.");
+					 Writer.WriteLine($"{attacker.Name} regained {Heal(attacker, .25f)} HP.");
+				else Writer.WriteLine($"{attacker.Name} is already quite healthy and doesn't heal.");
 
 				//heal defender
 				if(defender.Health <= defender.Race.MaxHealth * .6f) 
-					 Console.WriteLine($"{defender.Name} regained {Heal(defender, .17f)} HP.");
-				else Console.WriteLine($"{defender.Name} is already quite healthy and doesn't heal.");
+					 Writer.WriteLine($"{defender.Name} regained {Heal(defender, .17f)} HP.");
+				else Writer.WriteLine($"{defender.Name} is already quite healthy and doesn't heal.");
 
 				return;
 			}
 			default: {
-				Console.WriteLine("ERROR: Invalid defChoice inside block.");
+				Writer.WriteLine("ERROR: Invalid defChoice inside block.");
 				return;
 			}
 		}
@@ -271,7 +256,8 @@ public class Combat {
 	}
 
 	internal static void Info(Player player, Entity enemy) {
-		Console.Clear();
+		Writer.Clear();
+		Writer.CursorTop();
 		player.Display();
 		enemy.Display();
 	}
@@ -293,35 +279,36 @@ public class Combat {
 			combat.
 		 */
 
-		Console.WriteLine($"You attempt to run away...");
+		Writer.WriteLine();
+		Writer.WriteLine($"You attempt to run away...");
 
 		float runChance = player.Armour.Dodge / 20;
 		runChance *= (player.Health / player.Race.MaxHealth) * .75f + .25f;
 
 		if(runChance >= new Random().NextSingle()) {
-			Console.WriteLine("...and succeed!\n\nCongratulations! You run away.");
+			Writer.WriteLine("...and succeed!\n\nCongratulations! You run away.\n");
 
 			if(player.Health <= player.Race.MaxHealth * .75f) {
-				Console.WriteLine("\nThe relief from the fight allows you to regain some health.");
-				Console.WriteLine($"You heal {Heal(player, .25f)} HP.\n");
+				Writer.WriteLine("The relief from the fight allows you to regain some health.");
+				Writer.WriteLine($"You heal {Heal(player, .25f)} HP.\n");
 			}
 			
 			return true;
 		}
 
 
-		Console.WriteLine("...but fail, which gives the enemy a chance to attack...");
+		Writer.WriteLine("...but fail, which gives the enemy a chance to attack...");
 
 		if (DoesHit(player, enemy)){
 			float dmg = enemy.Weapon.Damage * (1 - player.Armour.Defense/20) * .5f;
 			dmg = MathF.Round(dmg, 1);
 			player.Damage(dmg);
-			Console.WriteLine($"...and they hit, dealing {MathF.Round(dmg, 1)} damage!");
+			Writer.WriteLine($"...and they hit, dealing {MathF.Round(dmg, 1)} damage!");
 		}
 		else {
-			Console.WriteLine("...but they miss! You take a moment to recover before your next move.");
+			Writer.WriteLine("...but they miss! You take a moment to recover before your next move.");
 			if(player.Health <= player.Race.MaxHealth * .75f)
-				Console.WriteLine($"You heal {Heal(player, .25f)} HP.\n");
+				Writer.WriteLine($"You heal {Heal(player, .25f)} HP.\n");
 		}
 
 		return false;

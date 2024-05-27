@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace DungeonLibrary;
 
@@ -92,27 +93,27 @@ public class Armour {
 	}
 
 	public static void DisplayArmour(Armour a) {
-		Console.WriteLine(a);
-		for(int i = 0; i<a.Name.Length; i++) Console.Write("-");
-		Console.WriteLine($"\nDefense:	{a.Defense}\n");
-		Console.WriteLine($"Dodge:		{a.Dodge}");
+		Writer.WriteLine(a.ToString());
+		for(int i = 0; i<a.Name.Length; i++) Writer.Write("-");
+		Writer.WriteLine($"\nDefense:	{a.Defense}\n");
+		Writer.WriteLine($"Dodge:		{a.Dodge}");
 	}
 
 	public static void CompareArmour(Armour a1, Armour a2) {
 		if(a1.Name == a2.Name) return;
 
-		Console.WriteLine("\n  COMPARE ARMOURS");
-		Console.WriteLine("===================\n");
+		Writer.WriteLine("\n  COMPARE ARMOURS");
+		Writer.WriteLine(  "===================\n");
 
 		int padSize = 13;
-		Console.WriteLine($"Type:\t " +
+		Writer.WriteLine($"Type:    " +
 			$"{a1.ToString().PadLeft(padSize)}   " +
 			$"{a2.ToString().PadRight(padSize)}");
-		Console.WriteLine($"Defense:" +
+		Writer.WriteLine($"Defense:"  +
 			$"{a1.Defense.ToString().PadLeft(padSize)}  " +
 			$"{(a1.Defense==a2.Defense ? "=" : (a1.Defense>a2.Defense ? ">" : "<"))}  " +
 			$"{a2.Defense.ToString().PadRight(padSize)}");
-		Console.WriteLine($"Dodge:\t" +
+		Writer.WriteLine($"Dodge:  " +
 			$"{a1.Dodge.ToString().PadLeft(padSize)}  " +
 			$"{(a1.Dodge==a2.Dodge ? "=" : (a1.Dodge>a2.Dodge ? ">" : "<"))}  " +
 			$"{a2.Dodge.ToString().PadRight(padSize)}\n\n");

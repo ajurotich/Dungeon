@@ -51,8 +51,8 @@ public class World {
 			}
 			else {
 				_worldObjects[i] = (new Random().Next(1, 51)) switch {
-					>0  and <=15 => new Armour(Armour.RandomType()),
-					>15 and <=30 => new Weapon(Weapon.RandomType()),
+					>0  and <=20 => new Armour(Armour.RandomType()),
+					>20 and <=40 => new Weapon(Weapon.RandomType()),
 					_ => new Potion(),
 				};
 			}
@@ -64,19 +64,19 @@ public class World {
 
 	//=== METHODS ===\\
 	public void Display() {
-		Console.WriteLine(Name + "\n");
-		Console.WriteLine(General.Wrap(Description) + "\n");
+		Writer.WriteLine(Name + "\n");
+		Writer.WriteLine(Description + "\n");
 
 		if(!IsSearched) {
-			Console.CursorTop = 28;
-			Console.WriteLine("There's more to discover here.");
+			Console.CursorTop = 27;
+			Writer.WriteLine("[!] There's more to discover here.");
 		}
 	}
 	public void DisplayAllObjects() {
-		Console.WriteLine("\nWorlds Remaining Objects\n{");
+		Writer.WriteLine("\nWorlds Remaining Objects\n{");
 		for(int i = 0; i < SearchAmount; i++)
-			Console.WriteLine("  " + Objects[i]);
-		Console.WriteLine(")\n");
+			Writer.WriteLine("  " + Objects[i]);
+		Writer.WriteLine(")\n");
 	}
 	public bool IncrementSearch() {
 		_isSearched = (--_searchAmount == 0) ? true : false;
