@@ -9,9 +9,9 @@ using Common;
 namespace Dungeon;
 
 internal enum CombatOptions {
-	Info,
 	Attack,
 	Block,
+	Info,
 	Flee
 }
 
@@ -34,8 +34,8 @@ public class Combat {
 			playerChoice = CombatSelect();
 			enemyChoice = (rand.Next(2) == 0) ? CombatOptions.Attack : CombatOptions.Block;
 			Writer.Clear();
-			Writer.WriteLine($"You choose: {(Enum.GetName(playerChoice).ToUpper())}");
-			Writer.WriteLine($"{enemy.Name} chooses: {(Enum.GetName(enemyChoice).ToUpper())}\n");
+			Writer.WriteLine($"{($"{player.Name} choose:").ToString().PadRight(20)}	{(Enum.GetName(playerChoice).ToUpper())}");
+			Writer.WriteLine($"{($"{enemy.Name} chooses:").ToString().PadRight(20)} {(Enum.GetName(enemyChoice).ToUpper())}\n");
 
 			if     (playerChoice == CombatOptions.Info) {
 				Info(player, enemy);
@@ -81,7 +81,7 @@ public class Combat {
 
 		Writer.WriteLine();
 		Writer.Write(">> ");
-		return (CombatOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)CombatOptions.Flee) ? num : 0);
+		return (CombatOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>=0 && num<=(int)CombatOptions.Flee) ? num : (int)CombatOptions.Info);
 
 	}
 

@@ -5,13 +5,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
+using DungeonLibrary;
 
 namespace Dungeon;
 
 public enum MenuOptions {
-	Info,
 	Search,
 	Move,
+	Self,
+	Info,
 	Quit,
 }
 
@@ -25,22 +27,14 @@ public class Menu {
 			Writer.WriteLine($"{i+1}) {(MenuOptions)i}");
 
 		Writer.Write("\n>> ");
-		return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>0 && num<=(int)MenuOptions.Quit) ? num : 0);
+		return (MenuOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>=0 && num<=(int)MenuOptions.Quit) ? num : (int)MenuOptions.Info);
 
-	}
-
-	public static void Info() {
-		Writer.Clear();
-		Writer.CursorTop();
-		Writer.Title = TitleOptions.INFO;
-
-		WorldManager.CurrentWorld.Display();
 	}
 
 	public static void Move() {
+		Writer.Title = TitleOptions.MOVE;
 		Writer.Clear();
 		Writer.CursorTop();
-		Writer.Title = TitleOptions.MOVE;
 
 		if(!WorldManager.CurrentWorld.IsSearched) {
 			Writer.WriteLine("There's more to discover here, but you may return later.\n");
@@ -61,9 +55,9 @@ public class Menu {
 	}
 
 	public static void Search() {
+		Writer.Title = TitleOptions.SEARCH;
 		Writer.Clear();
 		Writer.CursorTop();
-		Writer.Title = TitleOptions.SEARCH;
 
 		if(!WorldManager.CurrentWorld.IsSearched) WorldManager.SearchWorld();
 		else {
@@ -76,4 +70,19 @@ public class Menu {
 
 	}
 
+	public static void Self() {
+		Writer.Title = TitleOptions.SELF;
+		Writer.Clear();
+		Writer.CursorTop();
+
+		Program.player.Display();
+	}
+
+	public static void Info() {
+		Writer.Title = TitleOptions.INFO;
+		Writer.Clear();
+		Writer.CursorTop();
+
+		WorldManager.CurrentWorld.Display();
+	}
 }

@@ -11,10 +11,8 @@ class Program {
 
 	static void Main(string[] args) {
 
-		//=== WINDOW SET UP ===\\
+		//=== SETUP ===\\
 		Writer.WindowSetup();
-
-		//=== VARIABLES/SETUP ===\\
 		player = Player.CreateCharacter();
 		Writer.Clear();
 		Writer.Ellipsis("Your adventure awaits");
@@ -31,14 +29,17 @@ class Program {
 
 			//does action
 			switch (menuChoice) {
-				case MenuOptions.Info:
-					Menu.Info();
+				case MenuOptions.Search:
+					Menu.Search();
 					break;
 				case MenuOptions.Move:
 					Menu.Move();
 					break;
-				case MenuOptions.Search:
-					Menu.Search();
+				case MenuOptions.Self:
+					Menu.Self();
+					break;
+				case MenuOptions.Info:
+					Menu.Info();
 					break;
 				default:
 					Writer.Title = TitleOptions.NAVIA;
@@ -47,16 +48,20 @@ class Program {
 			}
 
 			//check if player is dead
-			if(!player.IsAlive)	break;
+			if(!player.IsAlive){ 
+				Writer.Title = TitleOptions.DEATH;
+				break;
+			}
 
 			//choose action for next loop
 			menuChoice = Menu.MenuSelect();
-			if(menuChoice == MenuOptions.Quit) break;
+			if(menuChoice == MenuOptions.Quit) {
+				Writer.Title = TitleOptions.QUIT;
+				break;	
+			}
 
 			Writer.Clear();
 		}
-
-		Writer.Title = TitleOptions.QUIT;
 
 		//=== GAME RESULTS ===\\
 		if(player.IsAlive) {
