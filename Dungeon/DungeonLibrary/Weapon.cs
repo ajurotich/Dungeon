@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace DungeonLibrary;
 
@@ -97,27 +98,27 @@ public class Weapon {
 	}
 
 	public static void DisplayWeapon(Weapon w) {
-		Console.WriteLine(w);
-		for(int i = 0; i<w.Name.Length; i++) Console.Write("-");
-		Console.WriteLine($"\nDamage:	{w.Damage}");
-		Console.WriteLine($"Difficulty:	{w.Difficulty}\n");
+		Writer.WriteLine(w.ToString());
+		for(int i = 0; i<w.Name.Length; i++) Writer.Write("-");
+		Writer.WriteLine($"\nDamage:	{w.Damage}");
+		Writer.WriteLine($"Difficulty:	{w.Difficulty}\n");
 	}
 
 	public static void CompareWeapon(Weapon w1, Weapon w2) {
 		if(w1.Name == w2.Name) return;
 
-		Console.WriteLine("\n  COMPARE WEAPONS");
-		Console.WriteLine(  "===================\n");
+		Writer.WriteLine("\n  COMPARE WEAPONS");
+		Writer.WriteLine(  "===================\n");
 
 		int padSize = 13;
-		Console.WriteLine	($"Type:	    " +
+		Writer.WriteLine	($"Type:       " +
 			$"{w1.ToString().PadLeft(padSize)}   " +
 			$"{w2.ToString().PadRight(padSize)}");
-		Console.WriteLine(	$"Damage:	   " +
+		Writer.WriteLine(	$"Damage:    " +
 			$"{w1.Damage.ToString().PadLeft(padSize)}  " +
 			$"{(w1.Damage==w2.Damage ? "=" : (w1.Damage>w2.Damage ? ">" : "<"))}  " +
 			$"{w2.Damage.ToString().PadRight(padSize)}");
-		Console.WriteLine(	$"Difficulty:" +
+		Writer.WriteLine(	$"Difficulty:" +
 			$"{w1.Difficulty.ToString().PadLeft(padSize)}  " +
 			$"{(w1.Difficulty==w2.Difficulty ? "=" : (w1.Difficulty>w2.Difficulty ? ">" : "<"))}  " +
 			$"{w2.Difficulty.ToString().PadRight(padSize)}\n\n");

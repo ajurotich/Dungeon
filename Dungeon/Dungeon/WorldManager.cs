@@ -54,8 +54,9 @@ public class WorldManager {
 			"Stepping into the room, you're surrounded by the boundless expanse of the cosmos, a tapestry of stars and secrets unfurled before you. Ethereal wisps of light dance through the air, carrying whispers of distant galaxies and forgotten constellations. The walls shimmer with celestial energies, shifting from cosmic voids to nebulous clouds to crystalline palaces in a mesmerizing display. A luminous gateway hangs in the center of the chamber, a portal to realms beyond the limits of mortal understanding. With a sense of awe and determination, you take your first step into the infinite expanse of the universe.",
 		];
 
-		Console.WriteLine(General.Wrap("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n"));
-		Console.WriteLine(General.Wrap(descriptions[new Random().Next(descriptions.Length)]));
+		Writer.WriteLine();
+		Writer.WriteLine("Your quest begins at the foot of the Great Mountain of Navia, where a mystical door stands tall before you. You have trained hard for this. You take a deep breath and push past the entryway...\n");
+		Writer.WriteLine(descriptions[new Random().Next(descriptions.Length)]);
 
 	}
 
@@ -64,15 +65,13 @@ public class WorldManager {
 		//foreach(World world in worldList) 
 		//	if(!world.IsSearched) remainingWorlds++;
 
-		General.Border();
 		if(remainingWorlds !=0) {
-			Console.WriteLine("Which realm would you like to travel to?\n");
-			//Console.WriteLine("Default: stay in current world.\n");
 
-			Random rand = new Random();
+			Random rand = new();
 			World[] wOptions = new World[(remainingWorlds>=4) ? rand.Next(2,5):remainingWorlds];
 
-			for(int i = 0; i<wOptions.Length && i<=remainingWorlds; i++) {
+			//populate woptions
+			for(int i = 0;i<wOptions.Length && i<=remainingWorlds;i++) {
 				int r = rand.Next(worldList.Length);
 
 				if(!wOptions.Contains(worldList[r]) && !worldList[r].IsSearched)
@@ -81,41 +80,51 @@ public class WorldManager {
 					i--;
 					continue;
 				}
-
-				Console.WriteLine($"{i+1}) {wOptions[i].Name}");
 			}
 
-			Console.WriteLine();
+			//selection
+			
 			while (true) {
+				Writer.CursorBottom();
+				Writer.WriteLine("Which realm would you like to travel to?\n");
+
+				for(int i = 0; i<wOptions.Length && i<=remainingWorlds; i++) 
+					Writer.WriteLine($"{i+1}) {wOptions[i].Name}");
+
+				Writer.WriteLine();
 				int selection;
-				Console.Write(">> ");
-				if (int.TryParse( Console.ReadLine().Trim(), out selection)) {
-					if(0<selection && selection<=wOptions.Length)
-						currentWorld = wOptions[--selection];
+				Writer.Write(">> ");
+
+				if (int.TryParse( Console.ReadLine().Trim(), out selection) &&
+					0 < selection && selection <= wOptions.Length) {
+					currentWorld = wOptions[--selection];
 					break;
 				}
+
 			}
 
 		}
 		else {
+			Writer.CursorBottom();
 			Console.WriteLine("All worlds explored.");
 			//TODO maybe Boss Fight once all worlds are explored
 		}
 
 		if(currentWorld.Name == "" && currentWorld.Description == "") ChooseWorlds();
 
-		Console.Clear();
+		Writer.Clear();
 		currentWorld.Display();
 
 	}
 
 	public static void SearchWorld() {
-		General.Ellipsis("You search through the world and find");
+		currentWorld.IncrementSearch();
+		Writer.Ellipsis("You search through the world and find");
 
 		//currentWorld.DisplayAllObjects();
-		Console.WriteLine();
+		Writer.WriteLine();
 
-		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount-1];
+		Object currentObject = currentWorld.Objects[currentWorld.SearchAmount];
 		switch(currentObject) {
 			case Armour a: {
 				Armour pa = Program.player.Armour;
@@ -123,40 +132,62 @@ public class WorldManager {
 				Console.WriteLine($"Some {a} armour!\n");
 
 				if(a.Name == pa.Name) {
-					Console.WriteLine("It seems to be the same armour you're already wearing.\n");
+					Writer.WriteLine("It seems to be the same armour you're already wearing.\n");
 					break;
 				}
 
 				Armour.CompareArmour(pa, a);
 
 				int cursorHeight = Console.CursorTop;
-				General.Border();
-				Console.WriteLine("What would you like to do with it?\n");
-				Console.WriteLine(
+				while(true) {
+					Writer.CursorBottom();
+					Writer.WriteLine($"What would you like to do with it?\n");
+					Writer.WriteLine($"1) Keep current armour and discard found armour");
+					Writer.WriteLine($"2) Equip found armour and discard current armour");
+
+					Writer.Write("\n>> ");
+					if(int.TryParse(Console.ReadLine().Trim().ToUpper(), out int input))
+						if(input == 1) {
+							Console.CursorTop = cursorHeight;
+							Writer.WriteLine($"You decide to keep your current {pa} armour.");
+							break;
+						}
+						else if (input == 2) {
+							Console.CursorTop = cursorHeight;
+							Writer.WriteLine($"You discard the {pa} and equip the {a}.");
+							Program.player.ChangeArmour(a);
+							break;
+						}
+				}
+
+				/*
+				Writer.WriteLine("What would you like to do with it?\n");
+				Writer.WriteLine(
 					"1) Equip found armour and discard current armour\n" +
 					"2) Discard found armour and keep current armour\n");
 
 				bool loop = true;
 				while(loop) {
-					Console.Write(">> ");
+					Writer.Write(">> ");
 
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
 							Console.CursorTop = cursorHeight;
-							Console.WriteLine($"You discard the {pa} and equip the {a}.");
+							Writer.WriteLine($"You discard the {pa} and equip the {a}.");
 							Program.player.ChangeArmour(a);
 							loop = false;
 							break;
 
 						case "2":
 							Console.CursorTop = cursorHeight;
-							Console.WriteLine($"You decide to keep your current {pa} armour.");
+							Writer.WriteLine($"You decide to keep your current {pa} armour.");
 							loop = false;
 							break;
 
 						default: break;
 					}
 				}
+				*/
 
 				break;
 			}
@@ -164,81 +195,98 @@ public class WorldManager {
 			case Weapon w: {
 				Weapon pw = Program.player.Weapon;
 
-				Console.WriteLine($"A{((w.Mod == WeaponMod.Broken || w.Mod == WeaponMod.New) ? "" : "n")} {w}!");
+				Writer.WriteLine($"A{((w.Mod == WeaponMod.Broken || w.Mod == WeaponMod.New) ? "" : "n")} {w}!");
 
 				if(w.Name == pw.Name) {
-					Console.WriteLine("It seems to be the same weapon you're already using.");
+					Writer.WriteLine("It seems to be the same weapon you're already using.");
 					break;
 				}
 
 				Weapon.CompareWeapon(pw, w);
 
 				int cursorHeight = Console.CursorTop;
-				General.Border();
-				Console.WriteLine("Would you like to do with it?\n");
-				Console.WriteLine(
+
+				while(true) {
+					Writer.CursorBottom();
+					Writer.WriteLine($"What would you like to do with it?\n");
+					Writer.WriteLine($"1) Keep current weapon and discard found weapon");
+					Writer.WriteLine($"2) Equip found weapon and discard current weapon");
+
+					Writer.Write("\n>> ");
+					if(int.TryParse(Console.ReadLine().Trim().ToUpper(), out int input))
+						if(input == 1) {
+							Console.CursorTop = cursorHeight;
+							Writer.WriteLine($"You decide to keep your current {pw} weapon.");
+							break;
+						}
+						else if(input == 2) {
+							Console.CursorTop = cursorHeight;
+							Writer.WriteLine($"You discard the {pw} and equip the {w}.");
+							Program.player.ChangeWeapon(w);
+							break;
+						}
+				}
+
+				/*
+				Writer.CursorBottom();
+				Writer.WriteLine("Would you like to do with it?\n");
+				Writer.WriteLine(
 					"1) Equip found weapon and discard current weapon\n" +
 					"2) Discard found weapon and keep current weapon\n");
 
 				bool loop = true;
 				while(loop) {
-					Console.Write(">> ");
+					Writer.Write(">> ");
 
 					switch(Console.ReadLine().Trim().ToUpper()) {
 						case "1":
 							Console.CursorTop = cursorHeight;
-							Console.WriteLine($"You discard the {pw} and equip the {w}.");
+							Writer.WriteLine($"You discard the {pw} and equip the {w}.");
 							Program.player.ChangeWeapon(w);
 							loop = false;
 							break;
 
 						case "2":
 							Console.CursorTop = cursorHeight;
-							Console.WriteLine($"You decide to keep your current {pw} weapon.");
+							Writer.WriteLine($"You decide to keep your current {pw} weapon.");
 							loop = false;
 							break;
 
 						default: break;
 					}
 				}
+				*/
 
 				break;
 			}
 
 			case Potion p:
 				float healAmount = p.HealPercent * Program.player.Race.MaxHealth / 100;
-					
-				Console.WriteLine($"A {p.Descriptor} health potion!");
+
+				Writer.WriteLine($"A {p.Descriptor} health potion!");
 
 				if(Program.player.Health >= Program.player.Race.MaxHealth)
-					Console.WriteLine($"It seems you are at full health already, but you {p.Verb} the whole thing anyway.");
-				else 
-					Console.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
+					Writer.WriteLine($"It seems you are at full health already, but you {p.Verb} the whole thing anyway.");
+				else
+					Writer.WriteLine($"You {p.Verb} the entire potion and restore {(int)healAmount} HP!");
 
-				Console.WriteLine($"\nYou are feeling {p.Descriptor}.\n");
+				Writer.WriteLine($"\nYou are feeling {p.Descriptor}.\n");
 
 				Program.player.Heal(healAmount);
 				break;
 
 			case Entity e:
-				Console.WriteLine($"Nothing... but it seems a{((e.Race.Type==RaceType.Elf || e.Race.Type==RaceType.Orc) ? "n" : "")} {Enum.GetName(e.Race.Type)} found you!\n");
+				Writer.WriteLine($"Nothing... but it seems a{((e.Race.Type==RaceType.Elf || e.Race.Type==RaceType.Orc) ? "n" : "")} {Enum.GetName(e.Race.Type)} found you!\n");
 				General.WaitForInput();
 
+				Writer.Title = TitleOptions.FIGHT;
 				Combat.Fight(e);
 
 				break;
 
 			default:
-				Console.WriteLine("Unknown object found... what is this thing?");
+				Writer.WriteLine("Unknown object found... what is this thing?");
 				break;
-		}
-
-		if(Program.player.IsAlive) {
-			Console.CursorTop = 28;
-			if(currentWorld.IncrementSearch())
-				Console.WriteLine("It seems you've found everything of value in this world...");
-			else 
-				Console.WriteLine("It seems there may be more to discover here...");
 		}
 
 	}

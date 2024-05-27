@@ -56,22 +56,22 @@ public class Entity {
 	}
 
 	public void Display() {
-		for(int i= 0; i < 80; i++) Console.Write("=");
+		for(int i= 0; i < 73; i++) Writer.Write("=");
 
-		Console.WriteLine($"\nDisplaying \'{Name}\' the {Enum.GetName(Race.Type)}:\n");
+		Writer.WriteLine($"\nDisplaying \'{Name}\' the {Enum.GetName(Race.Type)}:\n");
 
 		int p = 16;
 
-		Console.WriteLine($"{("Health:").PadRight(p)}{Health}/{Race.MaxHealth}");
-		Console.WriteLine($"{("Armour:").PadRight(p)}{Armour.Name}\n" +
-						$" {(">Defense:").PadRight(p)}{Armour.Defense}\n" +
-						$" {(">Dodge:").PadRight(p)}{Armour.Dodge}");
-		Console.WriteLine($"{("Weapon:").PadRight(p)}{Weapon.Name}\n" +
-						$" {(">Damage:").PadRight(p)}{Weapon.Damage}\n" +
-						$" {(">Difficulty:").PadRight(p)}{Weapon.Difficulty}");
+		Writer.WriteLine($"\t{("Health:").PadRight(p)}{Health}/{Race.MaxHealth}");
+		Writer.WriteLine($"\t{("Armour:").PadRight(p)}{Armour.Name}\n" +
+						 $"\t {("-Defense:").PadRight(p)}{Armour.Defense}\n" +
+						 $"\t {("-Dodge:").PadRight(p)}{Armour.Dodge}");
+		Writer.WriteLine($"\t{("Weapon:").PadRight(p)}{Weapon.Name}\n" +
+						 $"\t {("-Damage:").PadRight(p)}{Weapon.Damage}\n" +
+						 $"\t {("-Difficulty:").PadRight(p)}{Weapon.Difficulty}");
 
-		for(int i= 0; i < 80; i++) Console.Write("=");
-		Console.WriteLine("\n");
+		for(int i= 0; i < 72; i++) Writer.Write("=");
+		Writer.WriteLine("\n");
 	}
 	
 }
@@ -100,45 +100,46 @@ public class Player : Entity {
 		Console.Title = "CHARACTER CREATOR";
 
 		//=== VARIABLES ===\\
-		string? nameChoice = null;
+		string? nameChoice;
 		RaceType rType;
 		int charConfirm;
 
 		do {
-			Console.Clear();
-			Console.WriteLine("YOUR CHARACTER");
+			Writer.Clear();
+			Writer.WriteLine("YOUR CHARACTER");
+			//Writer.WriteLine();
 
 			//=== NAME ===\\
-			Console.Write("\nName: ");
+			Writer.Write("\nName: ");
 			int[] cursorPos = [Console.CursorLeft, Console.CursorTop];
 
 			while(true) { 
-				General.Border();
-				Console.WriteLine("What would you like to name your character?");
-				Console.Write("\n>> ");
+				Writer.CursorBottom();
+				Writer.WriteLine("What would you like to name your character?\n");
+				Writer.Write(">> ");
 				nameChoice = Console.ReadLine();
 
 				if(!string.IsNullOrEmpty(nameChoice.Trim())) break;
 			}
 
 			Console.SetCursorPosition(cursorPos[0], cursorPos[1]);
-			Console.Write(nameChoice.ToUpper());
-
+			Writer.Write(nameChoice.ToUpper());
+			Writer.WriteLine();
 
 			//=== RACE ===\\
-			Console.Write("\nRace: ");
+			Writer.Write("Race: ");
 			cursorPos = [Console.CursorLeft, Console.CursorTop];
 			string input;
 
 			while(true) {
-				General.Border();
-				Console.WriteLine("Choose your race:\n" +
-				"1. Human\n" +
-				"2. Elf\n" +
-				"3. Dwarf\n" +
-				"4. Goblin\n" +
-				"5. Orc");
-				Console.Write("\n>> ");
+				Writer.CursorBottom();
+				Writer.WriteLine("Choose your race:\n");
+
+				for(int i = 0; i <= (int)RaceType.Orc; i++)
+					Writer.WriteLine($"{i+1}) {(RaceType)i}");
+
+				Writer.WriteLine();
+				Writer.Write(">> ");
 
 				input = Console.ReadLine().Trim().ToUpper();
 				if(Regex.IsMatch(input, "^[1-5]$")) break;
@@ -154,18 +155,19 @@ public class Player : Entity {
 			};			
 
 			Console.SetCursorPosition(cursorPos[0], cursorPos[1]);
-			Console.Write(Enum.GetName(rType).ToUpper());
-
+			Writer.Write(Enum.GetName(rType).ToUpper());
 
 
 			//=== CONFIRMATION===\\
 			do {
-				General.Border();
-				Console.WriteLine($"Does this look correct? Y/N");
-				Console.Write("\n>> ");
+				Writer.CursorBottom();
+				Writer.WriteLine($"Does this look correct?\n");
+				Writer.WriteLine($"1) YES\n2) NO");
+
+				Writer.Write("\n>> ");
 				charConfirm = Console.ReadLine().Trim().ToUpper() switch {
-					"Y" => 0,
-					"N" => 1,
+					"1" => 0,
+					"2" => 1,
 					_ => 2
 				};
 			} while(charConfirm == 2);
