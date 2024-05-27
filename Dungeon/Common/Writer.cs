@@ -8,10 +8,12 @@ namespace Common;
 
 public enum TitleOptions {
 	NAVIA,
-	INFO,
 	SEARCH,
 	MOVE,
+	SELF,
+	INFO,
 	FIGHT,
+	DEATH,
 	QUIT,
 }
 
@@ -72,7 +74,7 @@ public class Writer {
 	public static void CursorTop() {
 		Console.SetCursorPosition(CURSORBORDER, TOPPOS);
 
-		Border(0, BOTTOMPOS-2);
+		Border(TOPPOS, BOTTOMPOS-2);
 
 		Console.SetCursorPosition(CURSORBORDER, TOPPOS);
 	}
@@ -85,7 +87,6 @@ public class Writer {
 		Console.SetCursorPosition(CURSORBORDER, BOTTOMPOS);
 	}
 
-	//todo pagetitle
 	public static void PageTitle() {
 		int[] cursorPos = [Console.CursorLeft, Console.CursorTop];
 
@@ -95,6 +96,7 @@ public class Writer {
 		WriteLine(new string(' ', SCREENWIDTH-CURSORBORDER*2));
 		Console.SetCursorPosition(CURSORBORDER, 1);
 
+		//font http://www.patorjk.com/software/taag/#p=display&f=Broadway%20KB&t=
 		switch(Title) {
 			case TitleOptions.NAVIA: {
 				WriteLine(" _          __       _         _       __ ");
@@ -102,15 +104,9 @@ public class Writer {
 				WriteLine("|_| \\|    /_/--\\     \\_\\/     |_|    /_/--\\ ");
 				break;
 			}
-			case TitleOptions.INFO: {
-				WriteLine(" _      _         ____     ___ ");
-				WriteLine("| |    | |\\ |    | |_     / / \\ ");
-				WriteLine("|_|    |_| \\|    |_|      \\_\\_/ ");
-				break;
-			}
 			case TitleOptions.SEARCH: {
-				WriteLine(" __      ____      __       ___      __       _    ");
-				WriteLine("( (`    | |_      / /\\     | |_)    / /`     | |_| ");
+				WriteLine(" __      ____      __       ___      ___      _    ");
+				WriteLine("( (`    | |_      / /\\     | |_)    / / `    | |_| ");
 				WriteLine("_)_)    |_|__    /_/--\\    |_| \\    \\_\\_,    |_| | ");
 				break;
 			}
@@ -120,16 +116,34 @@ public class Writer {
 				WriteLine("|_|  |    \\_\\_/     \\_\\/     |_|__ ");
 				break;
 			}
+			case TitleOptions.SELF: {
+				WriteLine(" __      ____     _        ____ ");
+				WriteLine("( (`    | |_     | |      | |_  ");
+				WriteLine("_)_)    |_|__    |_|__    |_|   ");
+				break;
+			}
+			case TitleOptions.INFO: {
+				WriteLine(" _      _         ____     ___ ");
+				WriteLine("| |    | |\\ |    | |_     / / \\ ");
+				WriteLine("|_|    |_| \\|    |_|      \\_\\_/ ");
+				break;
+			}
 			case TitleOptions.FIGHT: {
-				WriteLine(" ____     _      __       _       _____ ");
-				WriteLine("| |_     | |    / /`_    | |_|     | |  ");
-				WriteLine("|_|      |_|    \\_\\_/    |_| |     |_|  ");
+				WriteLine(" ____     _      ___     _       _____ ");
+				WriteLine("| |_     | |    / / _   | |_|     | |  ");
+				WriteLine("|_|      |_|    \\_\\_/   |_| |     |_|  ");
+				break;
+			}
+			case TitleOptions.DEATH: {
+				WriteLine(" ___      ____      __      _____     _    ");
+				WriteLine("| | \\    | |_      / /\\      | |     | |_| ");
+				WriteLine("|_|_/    |_|__    /_/--\\     |_|     |_| | ");
 				break;
 			}
 			case TitleOptions.QUIT: {
 				WriteLine(" ___       _        _     _____ ");
 				WriteLine("/ / \\     | | |    | |     | |  ");
-				WriteLine("\\_\\_\\\\    \\_\\_/    |_|     |_|  ");
+				WriteLine("\\_\\_\\     \\_\\_/    |_|     |_|  ");
 				break;
 			}
 		}
