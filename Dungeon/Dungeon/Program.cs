@@ -68,12 +68,14 @@ class Program {
 			Writer.Clear();
 			Writer.WriteLine("\nYou completed your quest! Congratulations!");
 			Writer.WriteLine($"\nYour final kill count: {player.KillCount}");
+			Writer.WriteLine(  $"Your final score:      {player.Score}");
         }
 		else {
 			Writer.Clear();
 			Writer.WriteLine("\nUnfortunately, your quest fell short. You were slain in battle.");
 			Writer.WriteLine($"\nYour final kill count: {player.KillCount}");
-        }
+			Writer.WriteLine(  $"Your final score:      {player.Score}");
+		}
 
 		//=== CREDITS ===\\
 		General.WaitForInput();
