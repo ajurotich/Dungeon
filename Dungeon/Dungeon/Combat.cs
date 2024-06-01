@@ -46,10 +46,10 @@ public class Combat {
 			Writer.WriteLine($"{($"{player.Name} chose:" ).ToString().PadRight(20)}	{(Enum.GetName(playerChoice).ToUpper())}");
 			Writer.WriteLine($"{($"{enemy.Name} chooses:").ToString().PadRight(20)} {(Enum.GetName(enemyChoice).ToUpper())}\n");
 
-			if     (playerChoice == CombatOptions.Info) { Info(); continue; }
-			else if(playerChoice == CombatOptions.Flee)   if(Flee()) return;
-			else if(playerChoice == CombatOptions.Attack) Attack();
+			if     (playerChoice == CombatOptions.Attack) Attack();
 			else if(playerChoice == CombatOptions.Block)  Block ();
+			else if(playerChoice == CombatOptions.Info) { Info(); continue; }
+			else if(playerChoice == CombatOptions.Flee)   if(Flee()) return;
 
 			//check result
 			if(!player.IsAlive || !enemy.IsAlive) break;
@@ -162,11 +162,8 @@ public class Combat {
 				}
 				else {
 					Writer.WriteLine($"...but misses.\n");
-					if(enemy.Health <= enemy.Race.MaxHealth * .4f) {
-						float hp = Heal(enemy, .2f);
-						hp *= (random.NextSingle() * .25f + .775f);
-						Writer.WriteLine($"\n{enemy.Name} regained strength and healed {hp} HP.");
-					}
+					if(enemy.Health <= enemy.Race.MaxHealth * .4f)
+						Writer.WriteLine($"\n{enemy.Name} regained strength and healed {Heal(enemy, .2f)} HP.");
 				}
 
 				return;
@@ -206,20 +203,13 @@ public class Combat {
 					player.Damage(dmg);
 					Writer.WriteLine($"...and hits, dealing {dmg} damage!\n");
 
-					if(player.Health <= player.Race.MaxHealth * .5f) {
-						float hp = Heal(enemy, .20f);
-						hp *= (random.NextSingle() * .25f + .775f);
-						Writer.WriteLine($"{player.Name} regained strength and healed {hp} HP.");
-					}
+					if(player.Health <= player.Race.MaxHealth * .5f) 
+						Writer.WriteLine($"{player.Name} regained strength and healed {Heal(player, .20f)} HP.");
 				}
 				else {
 					Writer.WriteLine($"...but misses.\n");
-					if(player.Health <= player.Race.MaxHealth * .6f) {
-						float hp = Heal(enemy, .25f);
-						hp *= (random.NextSingle() * .25f + .775f);
-						Writer.WriteLine($"{player.Name} regained strength and healed {hp} HP.");
-					}
-					
+					if(player.Health <= player.Race.MaxHealth * .6f) 
+						Writer.WriteLine($"{player.Name} regained strength and healed {Heal(player, .25f)} HP.");
 				}
 				
 
@@ -234,19 +224,13 @@ public class Combat {
 				Writer.WriteLine($"Both opponents choose to block! The temporary break in the fight allows you to regain some health.\n");
 
 				//heal player
-				if(player.Health <= player.Race.MaxHealth * .75f) {
-					float hp = Heal(enemy, .25f);
-					hp *= (random.NextSingle() * .25f + .775f);
-					Writer.WriteLine($"{player.Name} regained {hp} HP.");
-				}
+				if(player.Health <= player.Race.MaxHealth * .75f)
+					 Writer.WriteLine($"{player.Name} regained {Heal(player, .25f)} HP.");
 				else Writer.WriteLine($"{player.Name} is already quite healthy and doesn't heal.");
 
 				//heal enemy
-				if(enemy.Health <= enemy.Race.MaxHealth * .6f) {
-					float hp = Heal(enemy, .17f);
-					hp *= (random.NextSingle() * .25f + .775f);
-					Writer.WriteLine($"{enemy.Name} regained {hp} HP.");
-				}
+				if(enemy.Health <= enemy.Race.MaxHealth * .6f) 
+					 Writer.WriteLine($"{enemy.Name} regained {Heal(enemy, .17f)} HP.");
 				else Writer.WriteLine($"{enemy.Name} is already quite healthy and doesn't heal.");
 
 				return;
@@ -336,7 +320,7 @@ public class Combat {
 			hp = Math.Clamp(MathF.Round(hp, 1), 3, entity.Health * mod);
 		}
 		else hp = new Random().NextSingle()*5 + 3;
-
+		
 		hp = MathF.Round(hp, 1);
 		entity.Heal(hp);
 		return hp;
