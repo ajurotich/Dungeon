@@ -66,4 +66,3 @@ Once the game is running, use the following controls to navigate through the men
 **Scoring:**
 
 - Total enemies defeated and your final score displayed at each end of the game.
-- 
