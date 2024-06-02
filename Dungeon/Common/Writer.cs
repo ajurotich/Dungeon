@@ -15,6 +15,8 @@ public enum TitleOptions {
 	FIGHT,
 	DEATH,
 	QUIT,
+	WIN,
+	blank,
 }
 
 public class Writer {
@@ -144,6 +146,17 @@ public class Writer {
 				WriteLine(" ___       _        _     _____ ");
 				WriteLine("/ / \\     | | |    | |     | |  ");
 				WriteLine("\\_\\_\\     \\_\\_/    |_|     |_|  ");
+				break;
+			}
+			case TitleOptions.WIN: {
+				WriteLine(" _           _      _     ");
+				WriteLine("\\ \\    /    | |    | |\\ | ");
+				WriteLine(" \\_\\/\\/     |_|    |_| \\| ");
+				break;
+			}
+			case TitleOptions.blank:
+			default: {
+				WriteLine("");
 				break;
 			}
 		}

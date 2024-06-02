@@ -35,13 +35,13 @@ public class WorldManager {
 		"The air is thick with the smell of dust and earth as you navigate the treacherous remains of a collapsed mine shaft. Crumbling support beams and fallen debris litter the narrow passageways, creating a maze of precarious pathways and hidden dangers. Shafts of sunlight pierce through gaps in the rubble, casting shifting patterns of light and shadow on the rough-hewn walls. The distant rumble of shifting rock serves as a constant reminder of the unstable nature of your surroundings, urging you to tread carefully as you explore the forgotten depths.",
 		"Nature has reclaimed this ancient sanctuary, its crumbling stone walls now obscured by a tangle of vibrant foliage and creeping vines. Shafts of sunlight filter through the dense canopy overhead, casting a warm glow on the moss-covered altar at the heart of the chamber. Fragments of weathered statues lie scattered amidst the undergrowth, their features worn away by centuries of wind and rain. The air is alive with the chirping of birds and the rustle of leaves, a tranquil oasis amidst the ruins of a forgotten civilization.",
 	};
-	private static World[] worldList = new World[names.Length];
+	private static World[] worldList = new World[Math.Min(names.Length, descriptions.Length)];
 	private static World currentWorld = new World(true);
 	public static int remainingWorlds = worldList.Length;
 
 	//=== FUNCTIONS ===\\
 	public static void CreateWorlds() {
-		for(int i = 0;i<names.Length && i<descriptions.Length;i++)
+		for(int i = 0; i<worldList.Length; i++)
 			worldList[i] = new World(names[i], descriptions[i]);
 	}
 
@@ -62,9 +62,6 @@ public class WorldManager {
 
 	public static void ChooseWorlds() {
 
-		//foreach(World world in worldList) 
-		//	if(!world.IsSearched) remainingWorlds++;
-
 		if(remainingWorlds !=0) {
 
 			Random rand = new();
@@ -83,7 +80,6 @@ public class WorldManager {
 			}
 
 			//selection
-			
 			while (true) {
 				Writer.CursorBottom();
 				Writer.WriteLine("Which realm would you like to travel to?\n");
@@ -91,14 +87,48 @@ public class WorldManager {
 				for(int i = 0; i<wOptions.Length && i<=remainingWorlds; i++) 
 					Writer.WriteLine($"{i+1}) {wOptions[i].Name}");
 
+				if(remainingWorlds < 4)
+					Writer.WriteLine($"{remainingWorlds+1}) The Beast's Lair");
+
 				Writer.WriteLine();
-				int selection;
 				Writer.Write(">> ");
 
-				if (int.TryParse( Console.ReadLine().Trim(), out selection) &&
-					0 < selection && selection <= wOptions.Length) {
-					currentWorld = wOptions[--selection];
-					break;
+				if (int.TryParse(Console.ReadLine().Trim(), out int selection) && selection > 0) {
+					if(selection <= wOptions.Length) {
+						currentWorld = wOptions[--selection];
+						break;
+					}
+					else if(remainingWorlds < 4 && selection == remainingWorlds+1) {
+						Writer.CursorTop();
+						Writer.WriteLine("You follow the ancient carvings on the wall to a great stone door. It feels warm to the touch.");
+						Writer.WriteLine("If you enter, you will not be able to explore any more worlds.");
+
+						while(true) {
+							Writer.CursorBottom();
+							Writer.WriteLine($"Are you ready?\n");
+							Writer.WriteLine($"1) YES\n2) NO");
+
+							Writer.Write("\n>> ");
+							if(int.TryParse(Console.ReadLine().Trim().ToUpper(), out int input)) {
+								if(input == 1) {
+									Writer.Title = TitleOptions.blank;
+									Writer.Clear();
+
+									Writer.CursorTop();
+									Writer.Ellipsis("A long stairway stretches down before you");
+									Writer.Ellipsis("\nThe air is thick with the scent of rotting corpses");
+									General.WaitForInput();
+
+									Writer.Title = TitleOptions.FIGHT;
+									Combat.Fight(Program.boss);
+									return;
+								}
+								else break;
+							}
+
+						}
+
+					}
 				}
 
 			}
@@ -106,8 +136,11 @@ public class WorldManager {
 		}
 		else {
 			Writer.CursorBottom();
-			Console.WriteLine("All worlds explored.");
-			//TODO maybe Boss Fight once all worlds are explored
+			Writer.WriteLine("All worlds explored!\n");
+
+			Writer.Ellipsis("You hear a deep roar that trembles the ground");
+			General.WaitForInput();
+			Combat.Fight(Program.boss);
 		}
 
 		if(currentWorld.Name == "" && currentWorld.Description == "") ChooseWorlds();
@@ -131,7 +164,7 @@ public class WorldManager {
 
 				Console.WriteLine($"Some {a} armour!\n");
 
-				if(a.Name == pa.Name) {
+				if(a.ToString() == pa.ToString()) {
 					Writer.WriteLine("It seems to be the same armour you're already wearing.\n");
 					break;
 				}
@@ -195,9 +228,9 @@ public class WorldManager {
 			case Weapon w: {
 				Weapon pw = Program.player.Weapon;
 
-				Writer.WriteLine($"A{((w.Mod == WeaponMod.Broken || w.Mod == WeaponMod.New) ? "" : "n")} {w}!");
+				Writer.WriteLine($"A{((w.Mod == WeaponMod.Epic || w.Mod == WeaponMod.Old) ? "n" : "")} {w}!");
 
-				if(w.Name == pw.Name) {
+				if(w.ToString() == pw.ToString()) {
 					Writer.WriteLine("It seems to be the same weapon you're already using.");
 					break;
 				}

@@ -66,10 +66,10 @@ public class Entity {
 		int p = 16;
 
 		Writer.WriteLine($"\t{("Health:").PadRight(p)}{Health}/{Race.MaxHealth}");
-		Writer.WriteLine($"\t{("Armour:").PadRight(p)}{Armour.Name}\n" +
+		Writer.WriteLine($"\t{("Armour:").PadRight(p)}{Armour.ToString()}\n" +
 						 $"\t {("-Defense:").PadRight(p)}{Armour.Defense}\n" +
 						 $"\t {("-Dodge:").PadRight(p)}{Armour.Dodge}");
-		Writer.WriteLine($"\t{("Weapon:").PadRight(p)}{Weapon.Name}\n" +
+		Writer.WriteLine($"\t{("Weapon:").PadRight(p)}{Weapon.ToString()}\n" +
 						 $"\t {("-Damage:").PadRight(p)}{Weapon.Damage}\n" +
 						 $"\t {("-Difficulty:").PadRight(p)}{Weapon.Difficulty}");
 

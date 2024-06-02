@@ -8,6 +8,7 @@ namespace Dungeon;
 class Program {
 
 	public static Player player = new Player();
+	public static Boss boss = new Boss();
 
 	static void Main(string[] args) {
 
@@ -52,6 +53,10 @@ class Program {
 				Writer.Title = TitleOptions.DEATH;
 				break;
 			}
+			if(!boss.IsAlive) {
+				Writer.Title = TitleOptions.WIN;
+				break;
+			}
 
 			//choose action for next loop
 			menuChoice = Menu.MenuSelect();
@@ -64,18 +69,20 @@ class Program {
 		}
 
 		//=== GAME RESULTS ===\\
+		Writer.Clear();
 		if(player.IsAlive) {
-			Writer.Clear();
-			Writer.WriteLine("\nYou completed your quest! Congratulations!");
-			Writer.WriteLine($"\nYour final kill count: {player.KillCount}");
-			Writer.WriteLine(  $"Your final score:      {player.Score}");
+			if(!boss.IsAlive) {
+				Writer.WriteLine("With the beast slain, you leave the mysterious cave feeling victorious." +
+					"There is a huge party thrown in your honor.");
+
+				Writer.WriteLine("\nYou completed your quest! Congratulations!");
+			}
+			else Writer.Ellipsis("You leave feeling as though there may have been more to see");
         }
-		else {
-			Writer.Clear();
-			Writer.WriteLine("\nUnfortunately, your quest fell short. You were slain in battle.");
-			Writer.WriteLine($"\nYour final kill count: {player.KillCount}");
-			Writer.WriteLine(  $"Your final score:      {player.Score}");
-		}
+		else Writer.WriteLine("\nUnfortunately, your quest fell short. You were slain in battle.");
+
+		Writer.WriteLine($"\nEnemies slain:\t{player.KillCount}");
+		Writer.WriteLine(  $"Final score:  \t{player.Score}");
 
 		//=== CREDITS ===\\
 		General.WaitForInput();

@@ -12,13 +12,14 @@ public enum RaceType {
 	Dwarf,
 	Goblin,
 	Orc,
+	Dragon
 }
 
 public class Race {
 
 	//=== FIELDS ===\\
 	private RaceType _type;
-	private float _maxHealth, _skill;
+	protected float _maxHealth, _skill;
 
 	//=== PROPS ===\\
 	public RaceType Type	=> _type;
@@ -50,6 +51,10 @@ public class Race {
 				_maxHealth  = 80;
 				_skill		= 10f;
 				break;
+			case RaceType.Dragon:
+				_maxHealth  = 100;
+				_skill		= 20f;
+				break;
 		}
 	}
 
@@ -57,7 +62,7 @@ public class Race {
 	public static RaceType RandomType() {
 		Random random = new Random();
 		Array values = Enum.GetValues(typeof(RaceType));
-		RaceType rType = (RaceType)values.GetValue(random.Next(values.Length));
+		RaceType rType = (RaceType)values.GetValue(random.Next(values.Length-1));
 
 		return rType;
 	}

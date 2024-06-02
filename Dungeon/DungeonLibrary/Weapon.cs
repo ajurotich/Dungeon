@@ -25,13 +25,12 @@ public class Weapon {
 
 	//=== FIELDS ===\\
 	private WeaponType _type;
-	private WeaponMod _mod;
+	protected WeaponMod _mod;
 	private float _damage, _difficulty;
 
 	//=== PROPS ===\\
 	public WeaponType Type	=> _type;
 	public WeaponMod Mod	=> _mod;
-	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
 	public float Damage		=> MathF.Round(_damage, 1);
 	public float Difficulty	=> MathF.Round(_difficulty, 1);
 
@@ -99,13 +98,13 @@ public class Weapon {
 
 	public static void DisplayWeapon(Weapon w) {
 		Writer.WriteLine(w.ToString());
-		for(int i = 0; i<w.Name.Length; i++) Writer.Write("-");
+		for(int i = 0; i<w.ToString().Length; i++) Writer.Write("-");
 		Writer.WriteLine($"\nDamage:	{w.Damage}");
 		Writer.WriteLine($"Difficulty:	{w.Difficulty}\n");
 	}
 
 	public static void CompareWeapon(Weapon w1, Weapon w2) {
-		if(w1.Name == w2.Name) return;
+		if(w1.ToString() == w2.ToString()) return;
 
 		Writer.WriteLine("\n  COMPARE WEAPONS");
 		Writer.WriteLine(  "===================\n");
@@ -125,6 +124,6 @@ public class Weapon {
 
 	}
 
-	public override string ToString() => Name;
+	public override string ToString() => $"{Enum.GetName(_mod).ToUpper()} {Enum.GetName(_type).ToUpper()}";
 
 }
