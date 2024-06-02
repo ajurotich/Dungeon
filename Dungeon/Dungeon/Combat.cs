@@ -20,18 +20,21 @@ public class Combat {
 	//=== VARIABLES ===\\
 	internal static Player player = Program.player;
 	internal static Entity enemy;
+	internal static bool isBoss;
 	internal static CombatOptions playerChoice, enemyChoice;
+	internal static Random rand = new Random();
 
 	//=== METHODS ===\\
 	public static void Fight(Entity e) {
-		Writer.Clear();
-		Writer.Ellipsis("Preparing for battle");
 
-		//=== VARIABLES ===\\
-		Random rand = new();
+		//instantiate variables
 		enemy = e;
-		enemy.Damage(rand.NextSingle() * .2f * enemy.Race.MaxHealth);
+		isBoss = enemy.Race.Type == RaceType.Dragon;
 
+		//setup
+		if(!isBoss) enemy.Damage(rand.NextSingle() * .2f * enemy.Race.MaxHealth);
+		Writer.Clear();
+		Writer.Ellipsis(isBoss ? "A deep roar trembles the ground" : "Preparing for battle" );
 		Console.CursorTop = 26;
 		Writer.WriteLine($"{($"{player.Name}'s health:").ToString().PadRight(20)}{player.Health}/{player.Race.MaxHealth}");
 		Writer.WriteLine($"{($"{enemy.Name }'s health:").ToString().PadRight(20)}{enemy.Health}/{enemy.Race.MaxHealth}");
@@ -68,6 +71,11 @@ public class Combat {
 			player.IncrementKillCount();
 			player.IncreaseScore(enemy.Score);
 
+			if(isBoss) {
+				General.WaitForInput();
+				return;
+			}
+
 			Writer.WriteLine($"{player.Name} regained strength and healed {Heal(player, .25f)} HP.");
 		}
 		else Writer.WriteLine("\nWelp. Your dead.");
@@ -79,14 +87,16 @@ public class Combat {
 	internal static CombatOptions CombatSelect() {
 		Writer.CursorBottom();
 
+		int optionAmount = (isBoss ? 3 : 4);
+
 		Writer.WriteLine("What would you like to do?\n");
-		for(int i = 0; i <= (int)CombatOptions.Flee; i++)
+		for(int i = 0; i < optionAmount; i++)
 			Writer.WriteLine($"{i+1}) {(CombatOptions)i}");
 
 		Writer.WriteLine();
 		Writer.Write(">> ");
-		return (CombatOptions)((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>=0 && num<=(int)CombatOptions.Flee) ? num : (int)CombatOptions.Info);
-
+		return ((int.TryParse(Console.ReadLine().Trim(), out int num) && --num>=0 && num<optionAmount) 
+			? (CombatOptions)num : CombatOptions.Info);
 	}
 
 	internal static void Attack() {
@@ -341,6 +351,5 @@ public class Combat {
 		entity.Heal(hp);
 		return hp;
 	}
-
 
 }

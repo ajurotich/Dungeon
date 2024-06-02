@@ -10,7 +10,7 @@ namespace DungeonLibrary;
 public enum ArmourType {
 	Heavy,
 	Medium,
-	Light
+	Light,
 }
 public enum ArmourMod {
 	Epic,
@@ -24,13 +24,12 @@ public class Armour {
 
 	//=== FIELDS ===\\
 	private ArmourType _type;
-	private ArmourMod _mod;
+	protected ArmourMod _mod;
 	private float _dodge, _defense;
 
 	//=== PROPS ===\\
 	public ArmourType Type	=> _type;
 	public ArmourMod Mod	=> _mod;
-	public string Name		=> $"{Enum.GetName(_mod).ToLower()} {Enum.GetName(_type).ToLower()}";
 	public float Dodge		=> MathF.Round(_dodge, 1);
 	public float Defense	=> MathF.Round(_defense, 1);
 
@@ -94,13 +93,13 @@ public class Armour {
 
 	public static void DisplayArmour(Armour a) {
 		Writer.WriteLine(a.ToString());
-		for(int i = 0; i<a.Name.Length; i++) Writer.Write("-");
+		for(int i = 0; i<a.ToString().Length; i++) Writer.Write("-");
 		Writer.WriteLine($"\nDefense:	{a.Defense}\n");
 		Writer.WriteLine($"Dodge:		{a.Dodge}");
 	}
 
 	public static void CompareArmour(Armour a1, Armour a2) {
-		if(a1.Name == a2.Name) return;
+		if(a1.ToString() == a2.ToString()) return;
 
 		Writer.WriteLine("\n  COMPARE ARMOURS");
 		Writer.WriteLine(  "===================\n");
@@ -119,6 +118,6 @@ public class Armour {
 			$"{a2.Dodge.ToString().PadRight(padSize)}\n\n");
 	}
 
-	public override string ToString() => Name;
+	public override string ToString() => $"{Enum.GetName(_mod).ToUpper()} {Enum.GetName(_type).ToUpper()}";
 
 }
